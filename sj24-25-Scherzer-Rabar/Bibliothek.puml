@@ -1,0 +1,55 @@
+     @startuml
+
+entity Buecherei <Entity> {
+    - id: Long
+    - name: String
+    - buecher : CollectionList<Buch>
+    - filialen : CollectionList<Filialie>
+    - hauptsitz : Adresse
+}
+
+entity Filialie <Entity> {
+    - id: Long
+    - Adresse : Adresse
+}
+
+entity Buch <Entity> {
+    - id: Long
+    - onlineVerfuegbarkeit: Bool
+    - name: String
+    - woerterAnzahl: Integer
+}
+
+entity Kunde <Entity> {
+    - id : Long
+    - vorname : String
+    - nachname : String
+    - adresse : String
+}
+
+class Adresse <ValueObject> << (V, #339966) Embeddable >>{
+    - strasseHausnummer: String
+    - stadt : String
+    - plz: Integer
+}
+
+entity Verlag <Entity> {
+    - id: Long
+    - name: String
+    - adresse: Adresse
+}
+
+enum BuchArt <Enum> <<Embeddable>>{
+    EBOOK
+    GEBUNDENESBUCH
+    PAPERBACK
+}
+
+enum BuecherGenre <Enum> <<Embeddable>> {
+    FANTASY
+    DRAMA
+    ROMANCE
+    ...
+}
+
+@enduml
