@@ -3,28 +3,59 @@
 entity Buecherei <Entity> {
     - id: Long
     - name: String
+    - hauptsitz : Adresse
+    - buechereiAbo : CollectionList<BuechereiAbo>
     - buecher : CollectionList<Buch>
     - filialen : CollectionList<Filialie>
-    - hauptsitz : Adresse
 }
 
 entity Filialie <Entity> {
     - id: Long
-    - Adresse : Adresse
+    - adresse : Adresse
+    - exemplare: CollectionList<Exemplar>
 }
 
 entity Buch <Entity> {
     - id: Long
-    - onlineVerfuegbarkeit: Bool
     - name: String
     - woerterAnzahl: Integer
+    - genres: CollectionList<BuecherGenre>
+    - beschreibung: String
+    - autoren: CollectionList<Autor>
 }
 
-entity Kunde <Entity> {
-    - id : Long
+class Exemplar <ValueObject>{
+    - id: Long
+    - verlag: Verlag
+    - art: BuchArt
+    - seitenAnzahl: Int
+    - buch: Buch
+}
+
+entity Warenkorb <Entity> {
+    - kunde: Kunde
+    - buecher: CollectionList<Exemplar>
+    - abos: CollectionList<BuechereiAbo>
+    - datum: Date
+}
+
+
+
+entity Person <Entity> {
     - vorname : String
     - nachname : String
-    - adresse : String
+    - adresse : Adresse
+    - email: String
+}
+entity Autor <Entity> extends Person{
+    - kuenstlername: String
+}
+
+entity Kunde <Entity>  extends Person{
+    - id : Long
+    - username: String
+    - passwort: String
+    - buechereiAbos: CollectionList<BuechereiAbo>
 }
 
 class Adresse <ValueObject> << (V, #339966) Embeddable >>{
@@ -33,10 +64,26 @@ class Adresse <ValueObject> << (V, #339966) Embeddable >>{
     - plz: Integer
 }
 
+class Rezension <ValueObject> {
+    - titel: String
+    - bewertung: Int
+    - beschreibung : String
+    - kunde: Kunde
+    - buch: Buch
+    - buecherei: Buecherei
+    - verlag: Verlag
+}
+
 entity Verlag <Entity> {
     - id: Long
     - name: String
     - adresse: Adresse
+}
+
+class BuechereiAbo <ValueObject> << (V,#339966) >> {
+    - id:Long
+    - name: String
+    - kostenMonatlich:Double
 }
 
 enum BuchArt <Enum> <<Embeddable>>{
@@ -51,5 +98,30 @@ enum BuecherGenre <Enum> <<Embeddable>> {
     ROMANCE
     ...
 }
+
+Buch *-- Exemplar : von >
+Buch *-- Rezension : zu >
+Buch *-- BuecherGenre : ist >
+
+Exemplar *-- Verlag : von >
+Exemplar *-- Warenkorb : in >
+Exemplar ..> BuchArt :< embedded
+
+Kunde *-- Adresse : standort >
+Kunde *-- BuechereiAbo: abonniert >
+Kunde *-- Warenkorb: von >
+
+Verlag *-- Adresse : standort >
+
+Filialie *-- Adresse : standort >
+Filialie *-- Rezension : zu >
+
+Buecherei *-- Filialie: gehoert zu >
+Buecherei *-- Adresse : standort >
+Buecherei *-- BuechereiAbo: bietet an >
+Buecherei *-- Buch: angebot >
+
+BuechereiAbo *-- Warenkorb: in >
+
 
 @enduml
