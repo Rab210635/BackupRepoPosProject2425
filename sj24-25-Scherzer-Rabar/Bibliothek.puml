@@ -1,127 +1,146 @@
-     @startuml
+@startuml
 
-entity Buecherei <Entity> {
+entity Library <Entity> {
     - id: Long
     - name: String
-    - hauptsitz : Adresse
-    - buechereiAbo : CollectionList<BuechereiAbo>
-    - buecher : CollectionList<Buch>
-    - filialen : CollectionList<Filialie>
+    - headquarters: Address
+    - librarySubscriptions: CollectionList<LibrarySubscription>
+    - books: CollectionList<BookInLibraries>
 }
 
-entity Filialie <Entity> {
+entity Branch <Entity> {
     - id: Long
-    - adresse : Adresse
-    - exemplare: CollectionList<Exemplar>
+    - address: Address
+    - copies: CollectionList<Copy>
+    - library: Library
 }
 
-entity Buch <Entity> {
+class BookInLibraries <ValueObject> << (V,#339966) >> {
+    - book : Book
+    - borrowLengthDays : Integer
+}
+
+entity Book <Entity> {
     - id: Long
     - name: String
-    - woerterAnzahl: Integer
-    - genres: CollectionList<BuecherGenre>
-    - beschreibung: String
-    - autoren: CollectionList<Autor>
+    - availableOnline: Boolean
+    - wordCount: Integer
+    - genres: CollectionList<BookGenre>
+    - description: String
+    - authors: CollectionList<Author>
 }
 
-class Exemplar <ValueObject>{
+class Borrowing <ValueObject> << (V,#339966) >> {
+    - customer : Customer
+    - copy : Copy
+    - fromDate : Date
+    - extendedDays : Integer
+}
+
+class Copy <ValueObject> << (V,#339966) >> {
     - id: Long
-    - verlag: Verlag
-    - art: BuchArt
-    - seitenAnzahl: Int
-    - buch: Buch
+    - publisher: Publisher
+    - type: BookType
+    - pageCount: Int
+    - book: Book
 }
 
-entity Warenkorb <Entity> {
-    - kunde: Kunde
-    - buecher: CollectionList<Exemplar>
-    - abos: CollectionList<BuechereiAbo>
-    - datum: Date
+class Cart <ValueObject> << (V, #339966) Embeddable >> {
+    - customer: Customer
+    - books: CollectionList<Copy>
+    - subscriptions: CollectionList<LibrarySubscription>
+    - date: Date
 }
-
-
 
 entity Person <Entity> {
-    - vorname : String
-    - nachname : String
-    - adresse : Adresse
+    - id: Long
+    - firstName: String
+    - lastName: String
+    - address: Address
     - email: String
 }
-entity Autor <Entity> extends Person{
-    - kuenstlername: String
+
+entity Author <Entity> extends Person {
+    - penName: String
 }
 
-entity Kunde <Entity>  extends Person{
-    - id : Long
+entity Customer <Entity> extends Person {
     - username: String
-    - passwort: String
-    - buechereiAbos: CollectionList<BuechereiAbo>
+    - password: String
+    - librarySubscriptions: CollectionList<LibrarySubscription>
 }
 
-class Adresse <ValueObject> << (V, #339966) Embeddable >>{
-    - strasseHausnummer: String
-    - stadt : String
-    - plz: Integer
+class Address <ValueObject> << (V, #339966) Embeddable >> {
+    - streetAndNumber: String
+    - city: String
+    - postalCode: Integer
 }
 
-class Rezension <ValueObject> {
-    - titel: String
-    - bewertung: Int
-    - beschreibung : String
-    - kunde: Kunde
-    - buch: Buch
-    - buecherei: Buecherei
-    - verlag: Verlag
+class Review <ValueObject> << (V,#339966) >> {
+    - title: String
+    - rating: Int
+    - description: String
+    - customer: Customer
+    - book: Book
+    - branch: Branch
+    - publisher: Publisher
 }
 
-entity Verlag <Entity> {
+entity Publisher <Entity> {
     - id: Long
     - name: String
-    - adresse: Adresse
+    - address: Address
 }
 
-class BuechereiAbo <ValueObject> << (V,#339966) >> {
-    - id:Long
+class LibrarySubscription <ValueObject> << (V,#339966) >> {
+    - id: Long
     - name: String
-    - kostenMonatlich:Double
+    - description: String
+    - monthlyCost: Double
 }
 
-enum BuchArt <Enum> <<Embeddable>>{
-    EBOOK
-    GEBUNDENESBUCH
+enum BookType <Enum> <<Embeddable>> {
+    HARDCOVER
     PAPERBACK
 }
 
-enum BuecherGenre <Enum> <<Embeddable>> {
+enum BookGenre <Enum> <<Embeddable>> {
     FANTASY
     DRAMA
     ROMANCE
     ...
 }
 
-Buch *-- Exemplar : von >
-Buch *-- Rezension : zu >
-Buch *-- BuecherGenre : ist >
+Book <-- Copy : references <
+Book <-- Review : to >
+Book *.. BookGenre : is >
+Book *-- Author : has >
+Book <-- BookInLibraries : in >
 
-Exemplar *-- Verlag : von >
-Exemplar *-- Warenkorb : in >
-Exemplar ..> BuchArt :< embedded
+Customer <-- Address : located at >
+Customer *-- LibrarySubscription: subscribes to >
+Customer <-- Cart: belongs to >
+Customer <-- Review: created by >
+Customer <-- Borrowing: borrowed >
 
-Kunde *-- Adresse : standort >
-Kunde *-- BuechereiAbo: abonniert >
-Kunde *-- Warenkorb: von >
+Publisher <-- Copy : from >
+Publisher <-- Address : located at >
+Publisher <-- Review : reviewed by >
 
-Verlag *-- Adresse : standort >
+Branch <-- Address : located at >
+Branch <-- Review : to >
+Branch *-- Copy : contains ordered >
 
-Filialie *-- Adresse : standort >
-Filialie *-- Rezension : zu >
+Library <-- Branch: belongs to >
+Library <-- Address : located at >
+Library *-- LibrarySubscription: offers >
+Library *-- BookInLibraries: contains >
 
-Buecherei *-- Filialie: gehoert zu >
-Buecherei *-- Adresse : standort >
-Buecherei *-- BuechereiAbo: bietet an >
-Buecherei *-- Buch: angebot >
+LibrarySubscription --* Cart: in <
 
-BuechereiAbo *-- Warenkorb: in >
+Copy --* Cart : in <
+Copy ..> BookType : embedded <
+Copy <-- Borrowing : borrowed >
 
 
 @enduml
