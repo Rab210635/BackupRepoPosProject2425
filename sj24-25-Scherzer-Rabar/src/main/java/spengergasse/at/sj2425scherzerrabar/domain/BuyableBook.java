@@ -8,7 +8,7 @@ public class BuyableBook{
         @EmbeddedId
         BuyableBookId buyableBookId;
         //TODO optionals? adden und wenn ja wann weil dann schlägt save immer aus :))
-        @ManyToOne()
+        @ManyToOne(optional = true)
         private Book book;
         private BookType version;
         private Float price;
