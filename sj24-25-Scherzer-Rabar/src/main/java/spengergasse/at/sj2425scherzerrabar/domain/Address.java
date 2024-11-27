@@ -1,5 +1,8 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
-public class Address {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+@Embeddable
+public record Address (String streetAndNumber, String city, Integer zip) {
 }
