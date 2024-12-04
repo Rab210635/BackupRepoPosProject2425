@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "librarysubscription")
-public class LibrarySubscription extends AbstractPersistable<Long> {
+public class LibrarySubscription {
     @EmbeddedId
     LibrarySubscriptionId librarySubscriptionId;
 

@@ -10,7 +10,8 @@ import java.io.Serializable;
 @Table(name = "borrowing")
 public class Borrowing {
     @EmbeddedId
-    BorrowingId borrowingId;
+    private BorrowingId borrowingId;
+
 
 
     @Embeddable
