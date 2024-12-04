@@ -14,8 +14,8 @@ public class Author extends Person {
     @JoinTable(name = "addresses_in_authors", foreignKey = @ForeignKey(name = "FK_author_addresses"))
     protected List<Address> address;
 
-    public Author(String firstName, String lastName, List<Address> address, Email email, String penname) {
-        super(firstName, lastName, address, email);
+    public Author(String firstName, String lastName, List<Address> address, EmailAddress emailAddress, String penname) {
+        super(firstName, lastName, address, emailAddress);
         this.penname = penname;
     }
 

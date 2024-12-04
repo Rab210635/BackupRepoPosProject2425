@@ -1,7 +1,6 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
-import spengergasse.at.sj2425scherzerrabar.persistence.CustomerRepository;
 
 import java.util.List;
 
@@ -12,8 +11,8 @@ public class Customer extends Person {
     @JoinTable(name = "addresses_in_customers", foreignKey = @ForeignKey(name = "FK_customer_addresses"))
     protected List<Address> address;
 
-    public Customer(String firstName, String lastName, Email email, List<Address> address) {
-        super(firstName, lastName,address,email);
+    public Customer(String firstName, String lastName, EmailAddress emailAddress, List<Address> address) {
+        super(firstName, lastName,address, emailAddress);
     }
     public Customer(){
         super();

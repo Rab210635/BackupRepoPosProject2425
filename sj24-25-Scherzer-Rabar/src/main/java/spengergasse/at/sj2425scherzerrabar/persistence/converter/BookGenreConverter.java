@@ -7,6 +7,9 @@ import spengergasse.at.sj2425scherzerrabar.domain.BookGenre;
 @Converter(autoApply = true)
 public class BookGenreConverter implements AttributeConverter<BookGenre, String> {
 
+    static final String VALID_VALUES = "'MI','TH','CR','RO','FA','SF','HF','CF','YA','BI','AU','ME','SH','TC','HI','SC','TE','PH','RE','SP','GN','CO','PO','HO'";
+    public static final String COLUMN_DEFINITION = "enum (" + VALID_VALUES + ")";
+
     @Override
     public String convertToDatabaseColumn(BookGenre bookGenre) {
         if (bookGenre == null) return null;
@@ -44,7 +47,7 @@ public class BookGenreConverter implements AttributeConverter<BookGenre, String>
     public BookGenre convertToEntityAttribute(String s) {
         if (s == null || s.isEmpty()) return null;
 
-        switch (s) {
+        switch (s.toUpperCase()) {
             case "MY": return BookGenre.MYSTERY;
             case "TH": return BookGenre.THRILLER;
             case "CR": return BookGenre.CRIME;
@@ -69,7 +72,17 @@ public class BookGenreConverter implements AttributeConverter<BookGenre, String>
             case "CO": return BookGenre.COMICS;
             case "PO": return BookGenre.POETRY;
             case "HO": return BookGenre.HORROR;
-            default: throw new IllegalArgumentException("Unknown abbreviation: " + s);
+            default: throw BookGenreException.withInvalidDatabaseValue(s);
         }
     }
+    public static class BookGenreException extends RuntimeException {
+        public BookGenreException(String message) {
+            super(message);
+        }
+        public static BookGenreException withInvalidDatabaseValue(String value){
+            String message = "The value provided is not valid: (%s)".formatted(value);
+            return new BookGenreException(message);
+        }
+    }
+
 }

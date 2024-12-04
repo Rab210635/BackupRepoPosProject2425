@@ -11,20 +11,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class BookRepositoryTest  {
+class BuyableBookRepositoryTest {
     @Autowired
-    private BookRepository bookRepository;
-
+    private BuyableBookRepository repository;
     @Test
-    public void can_save() {
+    void can_save(){
+        //arrange
         var adresse = new Address("spengergasse 20","Vienna",1010);
         var email = new EmailAddress("mail@mail.com");
-        List<Author> authors = List.of (new Author("Max","Mustermann", List.of(adresse),email,"test"));
-        var genres = List.of(BookGenre.COMICS, BookGenre.HORROR);
-        var book = new Book("name",new Date(Date.UTC(5,5,5,0,0,0)),true,200,genres, authors,List.of(BookType.EBOOK));
-        var saved = bookRepository.save(book);
+        var author = new Author("Max","Mustermann",List.of(adresse), email, "dada");
+        var book = new Book("dasd",new Date(Date.UTC(5,5,5,0,0,0)),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
+        var buyable = new BuyableBook(book, BookType.EBOOK,4.5f);
+        //act
+        var saved = repository.save(buyable);
+        //assert
         assertNotNull(saved);
-
     }
-
 }
