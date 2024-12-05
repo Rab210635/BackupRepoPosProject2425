@@ -21,7 +21,7 @@ class CustomerRepositoryTest {
         var adresse = new Address("spengergasse 20","Vienna",1010);
         var email = new EmailAddress("mail@mail.com");
         var customer = new Customer("Max","Mustermann", email,List.of(adresse));
-
+        var customer2 = new Customer();
         //act
         var saved = repository.save(customer);
         //assert

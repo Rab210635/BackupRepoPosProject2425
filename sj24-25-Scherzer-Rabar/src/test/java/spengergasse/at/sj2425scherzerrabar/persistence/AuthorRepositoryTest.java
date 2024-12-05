@@ -22,7 +22,7 @@ class AuthorRepositoryTest {
         var adresse = new Address("spengergasse 20","Vienna",1010);
         var email = new EmailAddress("mail@mail.com");
         var author = new Author("Max","Mustermann", List.of(adresse),email,"test");
-
+        var author2 = new Author();
         //act
         var saved = repository.save(author);
         //assert

@@ -24,6 +24,7 @@ class OrderRepositoryTest {
         var book = new Book("dasd",new Date(Date.UTC(5,5,5,0,0,0)),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
         var buyable = new BuyableBook(book, BookType.EBOOK,4.5f);
         var order = new Order(customer, null, new Date(Date.UTC(5,5,5,0,0,0)), List.of(buyable));
+        var order2 = new Order();
         //act
         var saved = repository.save(order);
         //assert

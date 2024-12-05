@@ -27,6 +27,7 @@ class ReviewRepositoryTest {
         var branch = new Branch();
         var publisher = new Publisher();
         var review = new Review("dasds",5,"dasdsa",customer,book,branch,publisher);
+        var review2 = new Review();
         //act
         var saved = repository.save(review);
         //assert
