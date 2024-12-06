@@ -12,68 +12,68 @@ public class BookGenreConverter implements AttributeConverter<BookGenre, String>
 
     @Override
     public String convertToDatabaseColumn(BookGenre bookGenre) {
-        if (bookGenre == null) return null;
 
-        switch (bookGenre) {
-            case MYSTERY: return "MY";
-            case THRILLER: return "TH";
-            case CRIME: return "CR";
-            case ROMANCE: return "RO";
-            case FANTASY: return "FA";
-            case SCIENCE_FICTION: return "SF";
-            case HISTORICAL_FICTION: return "HF";
-            case CONTEMPORARY_FICTION: return "CF";
-            case YOUNG_ADULT: return "YA";
-            case BIOGRAPHY: return "BI";
-            case AUTOBIOGRAPHY: return "AU";
-            case MEMOIR: return "ME";
-            case SELF_HELP: return "SH";
-            case TRUE_CRIME: return "TC";
-            case HISTORY: return "HI";
-            case SCIENCE: return "SC";
-            case TECHNOLOGY: return "TE";
-            case PHILOSOPHY: return "PH";
-            case RELIGION: return "RE";
-            case SPIRITUALITY: return "SP";
-            case GRAPHIC_NOVELS: return "GN";
-            case COMICS: return "CO";
-            case POETRY: return "PO";
-            case HORROR: return "HO";
-            default: throw new IllegalArgumentException("Unknown BookGenre: " + bookGenre);
-        }
+        return switch (bookGenre) {
+            case MYSTERY -> "MY";
+            case THRILLER -> "TH";
+            case CRIME -> "CR";
+            case ROMANCE -> "RO";
+            case FANTASY -> "FA";
+            case SCIENCE_FICTION -> "SF";
+            case HISTORICAL_FICTION -> "HF";
+            case CONTEMPORARY_FICTION -> "CF";
+            case YOUNG_ADULT -> "YA";
+            case BIOGRAPHY -> "BI";
+            case AUTOBIOGRAPHY -> "AU";
+            case MEMOIR -> "ME";
+            case SELF_HELP -> "SH";
+            case TRUE_CRIME -> "TC";
+            case HISTORY -> "HI";
+            case SCIENCE -> "SC";
+            case TECHNOLOGY -> "TE";
+            case PHILOSOPHY -> "PH";
+            case RELIGION -> "RE";
+            case SPIRITUALITY -> "SP";
+            case GRAPHIC_NOVELS -> "GN";
+            case COMICS -> "CO";
+            case POETRY -> "PO";
+            case HORROR -> "HO";
+            case null -> throw new NullPointerException("BookGenre is null");
+            default -> throw new IllegalArgumentException("Unsupported BookGenre: " + bookGenre);
+        };
     }
 
     @Override
     public BookGenre convertToEntityAttribute(String s) {
-        if (s == null || s.isEmpty()) return null;
+        if (s == null) throw new NullPointerException("BookGenre is null");
 
-        switch (s.toUpperCase()) {
-            case "MY": return BookGenre.MYSTERY;
-            case "TH": return BookGenre.THRILLER;
-            case "CR": return BookGenre.CRIME;
-            case "RO": return BookGenre.ROMANCE;
-            case "FA": return BookGenre.FANTASY;
-            case "SF": return BookGenre.SCIENCE_FICTION;
-            case "HF": return BookGenre.HISTORICAL_FICTION;
-            case "CF": return BookGenre.CONTEMPORARY_FICTION;
-            case "YA": return BookGenre.YOUNG_ADULT;
-            case "BI": return BookGenre.BIOGRAPHY;
-            case "AU": return BookGenre.AUTOBIOGRAPHY;
-            case "ME": return BookGenre.MEMOIR;
-            case "SH": return BookGenre.SELF_HELP;
-            case "TC": return BookGenre.TRUE_CRIME;
-            case "HI": return BookGenre.HISTORY;
-            case "SC": return BookGenre.SCIENCE;
-            case "TE": return BookGenre.TECHNOLOGY;
-            case "PH": return BookGenre.PHILOSOPHY;
-            case "RE": return BookGenre.RELIGION;
-            case "SP": return BookGenre.SPIRITUALITY;
-            case "GN": return BookGenre.GRAPHIC_NOVELS;
-            case "CO": return BookGenre.COMICS;
-            case "PO": return BookGenre.POETRY;
-            case "HO": return BookGenre.HORROR;
-            default: throw BookGenreException.withInvalidDatabaseValue(s);
-        }
+        return switch (s.toUpperCase()) {
+            case "MY" -> BookGenre.MYSTERY;
+            case "TH" -> BookGenre.THRILLER;
+            case "CR" -> BookGenre.CRIME;
+            case "RO" -> BookGenre.ROMANCE;
+            case "FA" -> BookGenre.FANTASY;
+            case "SF" -> BookGenre.SCIENCE_FICTION;
+            case "HF" -> BookGenre.HISTORICAL_FICTION;
+            case "CF" -> BookGenre.CONTEMPORARY_FICTION;
+            case "YA" -> BookGenre.YOUNG_ADULT;
+            case "BI" -> BookGenre.BIOGRAPHY;
+            case "AU" -> BookGenre.AUTOBIOGRAPHY;
+            case "ME" -> BookGenre.MEMOIR;
+            case "SH" -> BookGenre.SELF_HELP;
+            case "TC" -> BookGenre.TRUE_CRIME;
+            case "HI" -> BookGenre.HISTORY;
+            case "SC" -> BookGenre.SCIENCE;
+            case "TE" -> BookGenre.TECHNOLOGY;
+            case "PH" -> BookGenre.PHILOSOPHY;
+            case "RE" -> BookGenre.RELIGION;
+            case "SP" -> BookGenre.SPIRITUALITY;
+            case "GN" -> BookGenre.GRAPHIC_NOVELS;
+            case "CO" -> BookGenre.COMICS;
+            case "PO" -> BookGenre.POETRY;
+            case "HO" -> BookGenre.HORROR;
+            default -> throw BookGenreException.withInvalidDatabaseValue(s);
+        };
     }
     public static class BookGenreException extends RuntimeException {
         public BookGenreException(String message) {
