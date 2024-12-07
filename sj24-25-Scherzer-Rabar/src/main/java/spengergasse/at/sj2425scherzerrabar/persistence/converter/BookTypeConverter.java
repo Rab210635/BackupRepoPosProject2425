@@ -43,7 +43,5 @@ public class BookTypeConverter implements AttributeConverter<BookType, Character
             String message = "The value provided is an invalid null";
             return new BookTypeException(message);
         }
-
-
     }
 }
