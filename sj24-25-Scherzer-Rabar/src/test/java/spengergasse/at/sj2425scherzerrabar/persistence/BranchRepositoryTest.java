@@ -20,8 +20,7 @@ class BranchRepositoryTest {
         var books = List.of(new BookInLibraries());
         var library = FixturesFactory.thalia(libraryAddress,books);
         var address2 = FixturesFactory.address2();
-        var copys = List.of(new Copy());
-        Branch branch = new Branch(library,address2,copys);
+        Branch branch = new Branch(library,address2);
 
         var savedBranch = branchRepository.save(branch);
 

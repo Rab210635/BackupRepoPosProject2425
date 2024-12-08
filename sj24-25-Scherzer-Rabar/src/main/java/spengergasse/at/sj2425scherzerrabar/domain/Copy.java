@@ -20,6 +20,7 @@ public class Copy {
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 
+
     public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book) {
         this.copyId = copyId;
         this.publisher = publisher;
