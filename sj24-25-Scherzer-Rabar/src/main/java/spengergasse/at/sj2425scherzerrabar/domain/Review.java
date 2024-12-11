@@ -1,27 +1,30 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Review {
 
     @EmbeddedId
-    ReviewId reviewId;
+    private ReviewId reviewId;
 
     private String title;
+    @NotNull
     private Integer rating;
     private String description;
 
-    @ManyToOne(optional = true)
+    @NotNull
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Customer customer;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Book book;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Branch branch;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Publisher publisher;
 
     // Constructor, getters, setters, and any other necessary methods
@@ -38,7 +41,8 @@ public class Review {
 
     public Review() {}
 
-    record ReviewId(Long reviewId) {
+    @Embeddable
+    record ReviewId( @GeneratedValue @NotNull Long reviewId) {
 
     }
     // Getters and setters

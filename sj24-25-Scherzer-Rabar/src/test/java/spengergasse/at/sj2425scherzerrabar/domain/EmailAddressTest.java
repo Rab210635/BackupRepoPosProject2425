@@ -11,16 +11,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class EmailAddressTest {
 
-
-
-
-
     @Test
     public void create_mail_with_valid_values(){
         EmailAddress mail = new EmailAddress("dasdasdas@gmail.com");
         assertThat(mail).isEqualTo(new EmailAddress("dasdasdas@gmail.com"));
     }
-
 
     @Nested
     public class create_mail_invalid_values{

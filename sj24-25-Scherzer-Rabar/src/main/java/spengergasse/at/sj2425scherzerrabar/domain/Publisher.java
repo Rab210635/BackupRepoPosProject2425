@@ -9,8 +9,18 @@ import java.io.Serializable;
 @Table(name = "publisher")
 public class Publisher  {
     @EmbeddedId
-    PublisherId publisherId;
+    private PublisherId publisherId;
+    @NotNull
+    private String name;
+    @NotNull
+    private Address address;
 
+    public Publisher() {}
+
+    public Publisher(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 
     @Embeddable
     record PublisherId (@GeneratedValue @NotNull Long id){}

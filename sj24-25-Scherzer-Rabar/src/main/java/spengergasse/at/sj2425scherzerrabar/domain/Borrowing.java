@@ -13,11 +13,11 @@ import java.util.List;
 public class Borrowing {
     @EmbeddedId
     private BorrowingId borrowingId;
-
-    //TODO OPTIONAL EIG
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "customer_borrowing", foreignKey = @ForeignKey(name = "FK_customer_borrowing"))
     private Customer customer;
 
+    @JoinColumn(name = "copies_borrowed", foreignKey = @ForeignKey(name = "FK_copy_borrowing"))
     @OneToMany(cascade = CascadeType.ALL)
     private List<Copy> copies;
     private Date fromDate;

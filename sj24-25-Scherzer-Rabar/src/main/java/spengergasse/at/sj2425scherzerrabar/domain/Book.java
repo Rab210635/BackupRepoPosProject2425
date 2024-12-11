@@ -51,68 +51,6 @@ public class Book {
 
     @Embeddable
     public record BookId (@GeneratedValue @NotNull Long id){}
+    
 
-    public BookId getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(BookId bookId) {
-        this.bookId = bookId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Boolean getAvailableOnline() {
-        return availableOnline;
-    }
-
-    public void setAvailableOnline(Boolean availableOnline) {
-        this.availableOnline = availableOnline;
-    }
-
-    public Integer getWordCount() {
-        return wordCount;
-    }
-
-    public void setWordCount(Integer wordCount) {
-        this.wordCount = wordCount;
-    }
-
-    public List<BookGenre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<BookGenre> genres) {
-        this.genres = genres;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
-    }
 }

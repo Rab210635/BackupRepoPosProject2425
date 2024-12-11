@@ -11,21 +11,24 @@ import java.util.List;
 public class Order {
     @EmbeddedId
     private OrderId id;
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_customer_order"))
     private Customer customer;
     @ManyToMany
     @JoinTable(name = "subscriptions_in_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscription_id"))
+            joinColumns = @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "FK_order")),
+            inverseJoinColumns = @JoinColumn(name = "subscription_id",foreignKey = @ForeignKey(name = "FK_subscription")))
     private List<LibrarySubscription> subscriptions;
 
+    @NotNull
     private Date date;
 
     @ManyToMany
     @JoinTable(
             name = "book_in_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
+            joinColumns = @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "FK_book")),
+            inverseJoinColumns = @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_order"))
     )
     private List<BuyableBook> books;
 
