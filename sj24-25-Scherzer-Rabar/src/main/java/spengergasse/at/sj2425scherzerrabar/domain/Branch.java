@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 
-
 @Entity
 @Table(name = "branch")
 public class Branch {

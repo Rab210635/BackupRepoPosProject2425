@@ -32,7 +32,6 @@ public class BookTypeConverter implements AttributeConverter<BookType, Character
         };
     }
     public static class BookTypeException extends RuntimeException {
-
         public BookTypeException(String message) {
             super(message);
         }
