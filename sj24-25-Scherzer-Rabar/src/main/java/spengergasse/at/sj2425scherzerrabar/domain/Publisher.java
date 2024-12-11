@@ -10,7 +10,15 @@ import java.io.Serializable;
 public class Publisher  {
     @EmbeddedId
     PublisherId publisherId;
+    private String name;
+    private Address address;
 
+    public Publisher() {}
+
+    public Publisher(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 
     @Embeddable
     record PublisherId (@GeneratedValue @NotNull Long id){}

@@ -107,14 +107,18 @@ class BookGenreConverterTest {
         void convert_invalid_database_to_class() {
             String dbValue = "ABC";
             BookGenreConverter converter = new BookGenreConverter();
-            assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue)).isInstanceOf(BookGenreConverter.BookGenreException.class).hasMessageContaining("provided is not valid");
+            assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue))
+                    .isInstanceOf(BookGenreConverter.BookGenreException.class)
+                    .hasMessageContaining("provided is not valid");
         }
 
         @Test
         void convert_null_database_to_class(){
             String dbValue = null;
             BookGenreConverter converter = new BookGenreConverter();
-            assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue)).isInstanceOf(NullPointerException.class).hasMessageContaining("is null");
+            assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue))
+                    .isInstanceOf(NullPointerException.class)
+                    .hasMessageContaining("is null");
         }
     }
 
