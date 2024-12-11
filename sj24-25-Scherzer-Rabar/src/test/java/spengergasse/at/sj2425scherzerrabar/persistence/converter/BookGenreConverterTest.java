@@ -55,6 +55,11 @@ class BookGenreConverterTest {
                     Arguments.of("HO", BookGenre.HORROR)
             );
         }
+        @Test
+        void convert_null_value_to_database(){
+            BookGenreConverter converter = new BookGenreConverter();
+            assertThatThrownBy(()->converter.convertToDatabaseColumn(null)).isInstanceOf(NullPointerException.class).hasMessageContaining("BookGenre is null");
+        }
     }
 
     @Nested
@@ -103,6 +108,13 @@ class BookGenreConverterTest {
             String dbValue = "ABC";
             BookGenreConverter converter = new BookGenreConverter();
             assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue)).isInstanceOf(BookGenreConverter.BookGenreException.class).hasMessageContaining("provided is not valid");
+        }
+
+        @Test
+        void convert_null_database_to_class(){
+            String dbValue = null;
+            BookGenreConverter converter = new BookGenreConverter();
+            assertThatThrownBy(()->converter.convertToEntityAttribute(dbValue)).isInstanceOf(NullPointerException.class).hasMessageContaining("is null");
         }
     }
 
