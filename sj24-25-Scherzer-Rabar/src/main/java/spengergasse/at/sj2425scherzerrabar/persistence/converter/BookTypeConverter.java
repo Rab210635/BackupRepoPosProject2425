@@ -8,7 +8,7 @@ import spengergasse.at.sj2425scherzerrabar.domain.BookType;
 public class BookTypeConverter implements AttributeConverter<BookType, Character> {
     static final String VALID_VALUES = "'H','P','E'";
     //TODO
-    public static final String COLUMN_DEFINITION = "enum ( "+ VALID_VALUES+")";
+    public static final String COLUMN_DEFINITION = "enum ("+VALID_VALUES+")";
     
     @Override
     public Character convertToDatabaseColumn(BookType bookType) {
