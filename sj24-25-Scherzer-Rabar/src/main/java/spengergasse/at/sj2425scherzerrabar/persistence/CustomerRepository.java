@@ -8,4 +8,4 @@ import spengergasse.at.sj2425scherzerrabar.domain.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-}
+} //<3

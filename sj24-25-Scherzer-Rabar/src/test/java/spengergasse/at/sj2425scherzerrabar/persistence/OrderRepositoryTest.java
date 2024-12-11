@@ -30,4 +30,10 @@ class OrderRepositoryTest {
         //assert
         assertNotNull(saved);
     }
+
+    @Test
+    void default_constr(){
+        Order defaultconstructed = new Order();
+        assertNotNull(defaultconstructed);
+    }
 }

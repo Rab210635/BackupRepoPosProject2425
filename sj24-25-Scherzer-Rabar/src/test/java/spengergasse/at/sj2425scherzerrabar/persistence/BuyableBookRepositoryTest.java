@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class BuyableBookRepositoryTest {
     @Autowired
     private BuyableBookRepository repository;
+    @Autowired
+    private BookRepository bookRepository;
     @Test
     void can_save(){
         //arrange
@@ -24,8 +26,15 @@ class BuyableBookRepositoryTest {
         var buyable = new BuyableBook(book, BookType.EBOOK,4.5f);
         var buyable2 = new BuyableBook();
         //act
+        bookRepository.save(book);
         var saved = repository.save(buyable);
         //assert
         assertNotNull(saved);
+    }
+
+    @Test
+    void default_constr(){
+        BuyableBook defaultconstructed = new BuyableBook();
+        assertNotNull(defaultconstructed);
     }
 }

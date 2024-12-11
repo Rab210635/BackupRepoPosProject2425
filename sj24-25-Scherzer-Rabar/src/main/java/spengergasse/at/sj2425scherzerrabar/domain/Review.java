@@ -12,16 +12,16 @@ public class Review {
     private Integer rating;
     private String description;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Customer customer;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Book book;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Branch branch;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Publisher publisher;
 
     // Constructor, getters, setters, and any other necessary methods

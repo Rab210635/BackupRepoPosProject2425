@@ -22,11 +22,15 @@ class BookRepositoryTest  {
         List<Author> authors = List.of (new Author("Max","Mustermann", List.of(adresse),email,"test"));
         var genres = List.of(BookGenre.COMICS, BookGenre.HORROR);
         var book = new Book("name",new Date(Date.UTC(5,5,5,0,0,0)),true,200,genres, authors,List.of(BookType.EBOOK));
-        var book2 = new Book();
 
         var saved = bookRepository.save(book);
         assertNotNull(saved);
 
+    }
+    @Test
+    void default_constr(){
+        LibrarySubscription defaultconstructed = new LibrarySubscription();
+        assertNotNull(defaultconstructed);
     }
 
 }

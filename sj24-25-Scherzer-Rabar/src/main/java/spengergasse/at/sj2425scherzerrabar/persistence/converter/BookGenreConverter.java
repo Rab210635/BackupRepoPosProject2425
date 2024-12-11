@@ -39,7 +39,6 @@ public class BookGenreConverter implements AttributeConverter<BookGenre, String>
             case POETRY -> "PO";
             case HORROR -> "HO";
             case null -> throw new NullPointerException("BookGenre is null");
-            default -> throw new IllegalArgumentException("Unsupported BookGenre: " + bookGenre);
         };
     }
 

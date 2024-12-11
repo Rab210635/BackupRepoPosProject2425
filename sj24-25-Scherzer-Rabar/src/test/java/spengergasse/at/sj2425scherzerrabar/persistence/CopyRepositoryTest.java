@@ -23,10 +23,15 @@ class CopyRepositoryTest {
         var book = new Book("dasd",new Date(Date.UTC(5,5,5,0,0,0)),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
         var publisher = new Publisher();
         var copy = new Copy(publisher,BookType.PAPERBACK,244,book);
-        var copy2 = new Copy();
         //act
         var saved = repository.save(copy);
         //assert
         assertNotNull(saved);
+    }
+
+    @Test
+    void default_constr(){
+        Copy defaultconstructed = new Copy();
+        assertNotNull(defaultconstructed);
     }
 }

@@ -33,4 +33,10 @@ class ReviewRepositoryTest {
         //assert
         assertNotNull(saved);
     }
+
+    @Test
+    void default_constr(){
+        Review defaultconstructed = new Review();
+        assertNotNull(defaultconstructed);
+    }
 }

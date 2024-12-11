@@ -11,7 +11,7 @@ import java.util.List;
 public class Order {
     @EmbeddedId
     private OrderId id;
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Customer customer;
     @ManyToMany
     @JoinTable(name = "subscriptions_in_order",

@@ -1,4 +1,9 @@
 package spengergasse.at.sj2425scherzerrabar.persistence;
 
-public interface LibraryRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import spengergasse.at.sj2425scherzerrabar.domain.Library;
+
+@Repository
+public interface LibraryRepository extends JpaRepository<Library, Integer> {
 }

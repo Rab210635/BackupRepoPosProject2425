@@ -16,8 +16,7 @@ public class BookTypeConverter implements AttributeConverter<BookType, Character
             case HARDCOVER -> 'H';
             case PAPERBACK -> 'P';
             case EBOOK -> 'E';
-            case null -> throw new NullPointerException("BookType is null");
-            default -> throw new IllegalArgumentException("Unsupported BookType: " + bookType);
+            case null -> throw BookTypeException.forNullValues();
         };
     }
 
@@ -32,6 +31,7 @@ public class BookTypeConverter implements AttributeConverter<BookType, Character
         };
     }
     public static class BookTypeException extends RuntimeException {
+
         public BookTypeException(String message) {
             super(message);
         }

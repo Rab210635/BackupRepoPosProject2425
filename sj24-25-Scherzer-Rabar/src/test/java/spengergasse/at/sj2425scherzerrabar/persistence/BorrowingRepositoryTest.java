@@ -31,4 +31,10 @@ class BorrowingRepositoryTest {
         //assert
         assertNotNull(saved);
     }
+
+    @Test
+    void default_constr(){
+        Borrowing defaultconstructed = new Borrowing();
+        assertNotNull(defaultconstructed);
+    }
 }
