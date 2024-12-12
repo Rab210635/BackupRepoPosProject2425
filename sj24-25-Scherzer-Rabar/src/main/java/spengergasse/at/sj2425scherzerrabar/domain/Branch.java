@@ -9,7 +9,7 @@ public class Branch {
     @EmbeddedId
     BranchId branchId;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_branches_2_librarys"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_branches_2_library"))
     private Library library;
     private Address address;
 

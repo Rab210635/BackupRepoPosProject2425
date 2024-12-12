@@ -2,6 +2,7 @@ package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Order {
     private List<LibrarySubscription> subscriptions;
 
     @NotNull
+    @PastOrPresent
     private Date date;
 
     @ManyToMany

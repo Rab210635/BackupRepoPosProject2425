@@ -8,11 +8,12 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer extends Person {
     @ElementCollection
-    @JoinTable(name = "addresses_in_customers", foreignKey = @ForeignKey(name = "FK_customer_addresses"))
+    @JoinTable(name = "addresses_in_customers", foreignKey = @ForeignKey(name = "FK_adresses_2_customer"))
     protected List<Address> address;
 
     public Customer(String firstName, String lastName, EmailAddress emailAddress, List<Address> address) {
-        super(firstName, lastName,address, emailAddress);
+        super(firstName, lastName, emailAddress);
+        this.address = address;
     }
     public Customer(){
         super();

@@ -16,7 +16,6 @@ public class Library {
     @NotNull
     private Address headquarters;
 
-
     @ElementCollection
     @JoinTable(name = "books_in_library",
             joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_books_in_libraries_2_library")))

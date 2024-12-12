@@ -12,11 +12,9 @@ public class Person {
     protected String firstName;
     protected String lastName;
 
-    @ElementCollection
-    protected List<Address> address;
 
     @Embedded
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_email_person"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_email_2_person"))
     protected EmailAddress emailAddress;
 
 
@@ -25,10 +23,9 @@ public class Person {
         @GeneratedValue @NotNull Long id){
     }
 
-    public Person(String firstName, String lastName, List<Address> address, EmailAddress mail) {
+    public Person(String firstName, String lastName, EmailAddress mail) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
         this.emailAddress = mail;
     }
     public Person() {}

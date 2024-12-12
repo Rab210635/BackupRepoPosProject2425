@@ -16,15 +16,19 @@ public class Review {
 
     @NotNull
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_reviews_2_customer"))
     private Customer customer;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_reviews_2_book"))
     private Book book;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_reviews_2_branch"))
     private Branch branch;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_reviews_2_publisher"))
     private Publisher publisher;
 
     // Constructor, getters, setters, and any other necessary methods

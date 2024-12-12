@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Subscribing {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_subscribings_2_branches"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_subscribings_2_branch"))
     private Branch mainBranch;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_subscribings_2_library_subscriptions"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_subscribings_2_library_subscription"))
     private LibrarySubscription librarySubscription;
 }
