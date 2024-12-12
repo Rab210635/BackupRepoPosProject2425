@@ -22,7 +22,7 @@ class PublisherRepositoryTest {
 
         var savedPublisher = publisherRepository.save(publisher);
 
-        assertNotNull(publisher);
+        assertNotNull(savedPublisher);
     }
     @Test
     void default_constr(){

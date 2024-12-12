@@ -3,6 +3,7 @@ package spengergasse.at.sj2425scherzerrabar.persistence;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.domain.Address;
 import spengergasse.at.sj2425scherzerrabar.domain.Borrowing;
 import spengergasse.at.sj2425scherzerrabar.domain.Customer;
@@ -19,9 +20,7 @@ class CustomerRepositoryTest {
     @Test
     void can_save(){
         //arrange
-        var adresse = new Address("spengergasse 20","Vienna",1010);
-        var email = new EmailAddress("mail@mail.com");
-        var customer = new Customer("Max","Mustermann", email,List.of(adresse));
+        var customer = FixturesFactory.customer();
         //act
         var saved = repository.save(customer);
         //assert

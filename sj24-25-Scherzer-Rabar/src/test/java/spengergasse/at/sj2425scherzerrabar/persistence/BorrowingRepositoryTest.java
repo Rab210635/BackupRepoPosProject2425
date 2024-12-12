@@ -25,7 +25,6 @@ class BorrowingRepositoryTest {
         var customer = new Customer("Max","Mustermann", email,List.of(adresse));
         var copy = new Copy(publisher,BookType.PAPERBACK,244,book);
         var borrowing = new Borrowing(customer,List.of(copy),new Date(Date.UTC(5,5,5,0,0,0)),25);
-        var borrowing2 = new Borrowing();
         //act
         var saved = repository.save(borrowing);
         //assert

@@ -18,13 +18,24 @@ public class FixturesFactory {
         return new Library("Thalia",address, books);
     }
 
-    public static Author author(Address address, EmailAddress email) {
-        return new Author("Max","Mustermann",List.of(address), email, "dada");
+    public static EmailAddress emailAddress() {
+        return new EmailAddress("mail@mail.com");
+    }
+
+    public static Customer customer() {
+        return new Customer("Max","Mustermann", emailAddress(),List.of(libraryAddress()));
+    }
+
+    public static BuyableBook buyableBook() {
+        return new BuyableBook(book(author()), BookType.EBOOK,4.5f);
+    }
+
+    public static Author author() {
+        return new Author("Max","Mustermann",List.of(address2()), emailAddress(), "dada");
     }
 
     public static Book book(Author author){
         return new Book("dasd",new Date(Date.UTC(5,5,5,0,0,0)),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
-
     }
 
     public static BookInLibraries libBook(Book b){
@@ -37,11 +48,31 @@ public class FixturesFactory {
                 100.0,library);
     }
 
+
+
+    public static Review review(){
+        return new Review("dasds",5,"dasdsa",customer(),book(author()),filiale(),dornbund(address2()));
+
+    }
+
     public static Publisher dornbund(Address address) {
         return new Publisher("Dornbund",address);
     }
 
-    public static Branch filiale(Address address, List<BookInLibraries> books) {
-        return new Branch(thalia(address2(),books),address);
+    public static Branch filiale() {
+        return new Branch(thalia(address2(),List.of(libBook(book(author())))), address2());
     }
+
+    public static LibrarySubscription librarySubscription() {
+        return new LibrarySubscription("Premium","dadasdasdsa",25.5,thalia(address2(), List.of(libBook(book(author())))));
+    }
+
+    public static Order order(){
+        return new Order(customer(), List.of(librarySubscription()) , new Date(Date.UTC(5,5,5,0,0,0)), List.of(buyableBook()));
+    }
+
+    public static Copy copy(){
+        return new Copy(dornbund(address2()),BookType.PAPERBACK,244,book(author()));
+    }
+
 }
