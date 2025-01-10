@@ -9,8 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 
 @Embeddable
 public class BookInLibraries {
@@ -22,4 +21,12 @@ public class BookInLibraries {
     @Min(0)
     @Max(365)
     private Integer borrowLengthDays;
+
+    public BookInLibraries(Book book, Integer borrowLengthDays) {
+        this.book = book;
+        this.borrowLengthDays = borrowLengthDays;
+    }
+    public  BookInLibraries(){
+
+    }
 }

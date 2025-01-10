@@ -16,9 +16,9 @@ public class Order {
     @NotNull
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_customer_order"))
     private Customer customer;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subscriptions_in_order",
-            joinColumns = @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "FK_order")),
+            joinColumns = @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "FK_ordersubscription")),
             inverseJoinColumns = @JoinColumn(name = "subscription_id",foreignKey = @ForeignKey(name = "FK_subscription")))
     private List<LibrarySubscription> subscriptions;
 
@@ -26,11 +26,11 @@ public class Order {
     @PastOrPresent
     private Date date;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "book_in_order",
             joinColumns = @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "FK_book")),
-            inverseJoinColumns = @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_order"))
+            inverseJoinColumns = @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_orderbook"))
     )
     private List<BuyableBook> books;
 

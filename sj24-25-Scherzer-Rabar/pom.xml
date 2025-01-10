@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>spengergasse.at</groupId>
     <artifactId>sj24-25-Scherzer-Rabar</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>sj24-25-Scherzer-Rabar</name>
     <description>sj24-25-Scherzer-Rabar</description>
     <url/>
@@ -18,7 +18,16 @@
         <license/>
     </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <name>Aron Rabar</name>
+            <email>rab210635@spengergasse.at</email>
+            <organization>Spengergasse</organization>
+        </developer>
+        <developer>
+            <name>Jan Elias Scherzer</name>
+            <email>sch210638@spengergasse.at</email>
+            <organization>Spengergasse</organization>
+        </developer>
     </developers>
     <scm>
         <connection/>
@@ -27,7 +36,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>22</java.version>
+        <java.version>23</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -38,7 +47,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -61,6 +69,18 @@
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

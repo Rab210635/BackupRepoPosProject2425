@@ -17,7 +17,7 @@ class BranchRepositoryTest {
     @Test
     void can_save() {
         var libraryAddress = FixturesFactory.libraryAddress();
-        var books = List.of(new BookInLibraries());
+        var books = List.of(new BookInLibraries(FixturesFactory.book(FixturesFactory.author()),53));
         var library = FixturesFactory.thalia(libraryAddress,books);
         var address2 = FixturesFactory.address2();
         Branch branch = new Branch(library,address2);
