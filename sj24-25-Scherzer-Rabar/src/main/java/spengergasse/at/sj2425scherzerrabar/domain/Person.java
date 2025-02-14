@@ -17,11 +17,11 @@ public class Person {
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_email_2_person"))
     protected EmailAddress emailAddress;
 
-
     @Embeddable
     public record PersonId(
-        @GeneratedValue @NotNull Long id){
+            @GeneratedValue @NotNull Long id){
     }
+
 
     public Person(String firstName, String lastName, EmailAddress mail) {
         this.firstName = firstName;

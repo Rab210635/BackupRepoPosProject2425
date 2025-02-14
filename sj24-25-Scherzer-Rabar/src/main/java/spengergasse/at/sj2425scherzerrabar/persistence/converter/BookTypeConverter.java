@@ -5,7 +5,7 @@ import jakarta.persistence.Converter;
 import spengergasse.at.sj2425scherzerrabar.domain.BookType;
 
 @Converter(autoApply = true)
-public class BookTypeConverter implements AttributeConverter<BookType, Character> {
+public class BookTypeConverter implements AttributeConverter<BookType, Character>   {
     static final String VALID_VALUES = "'H','P','E'";
     public static final String COLUMN_DEFINITION = "enum ( "+ VALID_VALUES+")";
     
