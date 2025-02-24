@@ -2,12 +2,16 @@ package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 @Entity
 public class Review {
 
     @EmbeddedId
     private ReviewId reviewId;
+
+    @Embedded
+    private ApiKey reviewApiKey;
 
     private String title;
     @NotNull
@@ -34,6 +38,7 @@ public class Review {
     // Constructor, getters, setters, and any other necessary methods
 
     public Review(String title, Integer rating, String description, Customer customer, Book book, Branch branch, Publisher publisher) {
+        this.reviewApiKey = new ApiKeyFactory().generate(30);
         this.title = title;
         this.rating = rating;
         this.description = description;
@@ -43,7 +48,9 @@ public class Review {
         this.publisher = publisher;
     }
 
-    public Review() {}
+    public Review() {
+        this.reviewApiKey = new ApiKeyFactory().generate(30);
+    }
 
     @Embeddable
     record ReviewId( @GeneratedValue @NotNull Long reviewId) {

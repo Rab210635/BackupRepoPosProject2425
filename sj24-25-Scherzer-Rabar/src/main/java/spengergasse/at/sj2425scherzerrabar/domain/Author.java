@@ -1,6 +1,8 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
+
 import java.util.List;
 
 @Entity

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
 
 @Entity
@@ -12,7 +12,8 @@ import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConvert
 public class Copy {
     @EmbeddedId
     private CopyId copyId;
-
+    @Embedded
+    private ApiKey copyApiKey;
     @NotNull
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_copies_2_publisher"))
@@ -33,13 +34,16 @@ public class Copy {
 
 
     public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book) {
+        this.copyApiKey = new ApiKeyFactory().generate(30);
         this.publisher = publisher;
         this.bookType = bookType;
         this.pageCount = pageCount;
         this.book = book;
     }
 
-    public Copy() {}
+    public Copy() {
+        this.copyApiKey = new ApiKeyFactory().generate(30);
+    }
 
     @Embeddable
     record CopyId (@GeneratedValue @NotNull Long id){}

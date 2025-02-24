@@ -3,6 +3,7 @@ package spengergasse.at.sj2425scherzerrabar.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public class Order {
     @EmbeddedId
     private OrderId id;
+    @Embedded
+    private ApiKey orderApiKey;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_customer_order"))
@@ -34,12 +37,16 @@ public class Order {
     )
     private List<BuyableBook> books;
 
-    public Order() {}
+    public Order() {
+        this.orderApiKey = new ApiKeyFactory().generate(30);
+    }
     public Order(Customer customer,  List<LibrarySubscription> subscriptions, Date date, List<BuyableBook> books) {
         this.customer = customer;
         this.subscriptions = subscriptions;
         this.date = date;
         this.books = books;
+        this.orderApiKey = new ApiKeyFactory().generate(30);
+
     }
 
     @Embeddable

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookGenreConverter;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class Book {
     @EmbeddedId
     private BookId bookId;
+    @Embedded
+    private ApiKey bookApiKey;
     @NotNull
     private String name;
     private Date releaseDate;
@@ -43,9 +46,12 @@ public class Book {
     )
     private List<Author> authors;
 
-    public Book() {}
+    public Book() {
+        this.bookApiKey = new ApiKeyFactory().generate(30);
+    }
 
     public Book(String name, Date releaseDate, Boolean availableOnline, Integer wordCount, List<BookGenre> genres, List<Author> authors, List<BookType> bookTypes) {
+        this.bookApiKey = new ApiKeyFactory().generate(30);
         this.name = name;
         this.releaseDate = releaseDate;
         this.availableOnline = availableOnline;

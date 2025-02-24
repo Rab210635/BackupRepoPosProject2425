@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 @Entity
 @Table(name = "librarysubscription")
 public class LibrarySubscription {
     @EmbeddedId
     private LibrarySubscriptionId librarySubscriptionId;
+    @Embedded
+    private ApiKey librarySubscriptionApiKey;
     @NotNull
     private String name;
     private String description;
@@ -23,9 +25,12 @@ public class LibrarySubscription {
     @NotNull
     private Library library;
 
-    public LibrarySubscription() {}
+    public LibrarySubscription() {
+        this.librarySubscriptionApiKey = new ApiKeyFactory().generate(30);
+    }
 
     public LibrarySubscription(String name, String description, Double monthlyCost, Library library) {
+        this.librarySubscriptionApiKey = new ApiKeyFactory().generate(30);
         this.name = name;
         this.description = description;
         this.monthlyCost = monthlyCost;

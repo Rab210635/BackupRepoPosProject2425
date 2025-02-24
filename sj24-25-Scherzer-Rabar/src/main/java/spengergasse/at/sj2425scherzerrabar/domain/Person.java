@@ -2,6 +2,7 @@ package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 import java.util.List;
 
@@ -11,6 +12,9 @@ public class Person {
     protected PersonId personId;
     protected String firstName;
     protected String lastName;
+
+    @Embedded
+    private ApiKey personApiKey;
 
 
     @Embedded
@@ -27,7 +31,10 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = mail;
+        this.personApiKey = new ApiKeyFactory().generate(30);
     }
-    public Person() {}
+    public Person() {
+        this.personApiKey = new ApiKeyFactory().generate(30);
+    }
 
 }
