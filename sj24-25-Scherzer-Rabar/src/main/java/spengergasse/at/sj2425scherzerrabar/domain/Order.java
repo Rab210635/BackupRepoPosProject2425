@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,7 +27,7 @@ public class Order {
 
     @NotNull
     @PastOrPresent
-    private Date date;
+    private LocalDate date;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -40,7 +40,7 @@ public class Order {
     public Order() {
         this.orderApiKey = new ApiKeyFactory().generate(30);
     }
-    public Order(Customer customer,  List<LibrarySubscription> subscriptions, Date date, List<BuyableBook> books) {
+    public Order(Customer customer,  List<LibrarySubscription> subscriptions, LocalDate date, List<BuyableBook> books) {
         this.customer = customer;
         this.subscriptions = subscriptions;
         this.date = date;
