@@ -2,7 +2,7 @@ package spengergasse.at.sj2425scherzerrabar;
 
 import spengergasse.at.sj2425scherzerrabar.domain.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class FixturesFactory {
@@ -35,7 +35,13 @@ public class FixturesFactory {
     }
 
     public static Book book(Author author){
-        return new Book("dasd",new Date(Date.UTC(5,5,5,0,0,0)),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
+        return new Book("dasd",
+                LocalDate.now(),
+                true,
+                1250,
+                List.of(BookGenre.ROMANCE),
+                List.of(author),
+                List.of(BookType.EBOOK));
     }
 
     public static BookInLibraries libBook(Book b){
@@ -68,7 +74,7 @@ public class FixturesFactory {
     }
 
     public static Order order(){
-        return new Order(customer(), List.of(librarySubscription()) , new Date(Date.UTC(5,5,5,0,0,0)), List.of(buyableBook()));
+        return new Order(customer(), List.of(librarySubscription()) , LocalDate.of(2025,2,5), List.of(buyableBook()));
     }
 
     public static Copy copy(){

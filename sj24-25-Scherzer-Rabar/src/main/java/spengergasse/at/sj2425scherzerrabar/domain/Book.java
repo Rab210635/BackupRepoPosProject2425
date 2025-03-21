@@ -9,7 +9,7 @@ import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookGenreConverter;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public class Book {
     private ApiKey bookApiKey;
     @NotNull
     private String name;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     @NotNull
     private Boolean availableOnline;
     @ElementCollection
@@ -50,7 +50,7 @@ public class Book {
         this.bookApiKey = new ApiKeyFactory().generate(30);
     }
 
-    public Book(String name, Date releaseDate, Boolean availableOnline, Integer wordCount, List<BookGenre> genres, List<Author> authors, List<BookType> bookTypes) {
+    public Book(String name, LocalDate releaseDate, Boolean availableOnline, Integer wordCount, List<BookGenre> genres, List<Author> authors, List<BookType> bookTypes) {
         this.bookApiKey = new ApiKeyFactory().generate(30);
         this.name = name;
         this.releaseDate = releaseDate;
@@ -59,6 +59,10 @@ public class Book {
         this.genres = genres;
         this.authors = authors;
         this.bookTypes = bookTypes;
+    }
+
+    public void addAuthor(Author a){
+        this.authors.add(a);
     }
 
     @Embeddable

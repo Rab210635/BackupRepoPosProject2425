@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,7 +27,7 @@ public class Borrowing {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Copy> copies;
     @PastOrPresent
-    private Date fromDate;
+    private LocalDate fromDate;
     @Max(30)
     @Min(1)
     private int extendedByDays;
@@ -36,7 +36,7 @@ public class Borrowing {
         this.borrowingApiKey = new ApiKeyFactory().generate(30);
     }
 
-    public Borrowing(Customer customer, List<Copy> copies, Date fromDate, int extendedByDays) {
+    public Borrowing(Customer customer, List<Copy> copies, LocalDate fromDate, int extendedByDays) {
         this.borrowingApiKey = new ApiKeyFactory().generate(30);
         this.customer = customer;
         this.copies = copies;
