@@ -14,14 +14,23 @@ public class Author extends Person {
     @ElementCollection
     @JoinTable(name = "addresses_in_authors", foreignKey = @ForeignKey(name = "FK_adresses_2_author"))
     protected List<Address> address;
+    
+    @Embedded
+    private ApiKey authorApiKey;
+
+
 
     public Author(String firstName, String lastName, List<Address> address, EmailAddress emailAddress, String penname) {
         super(firstName, lastName, emailAddress);
         this.penname = penname;
         this.address = address;
+
+        this.authorApiKey = new ApiKeyFactory().generate(30);
     }
 
     public Author() {
         super();
+
+        this.authorApiKey = new ApiKeyFactory().generate(30);
     }
 }

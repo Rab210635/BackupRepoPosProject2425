@@ -13,8 +13,7 @@ public class Person {
     protected String firstName;
     protected String lastName;
 
-    @Embedded
-    private ApiKey personApiKey;
+
 
 
     @Embedded
@@ -31,10 +30,10 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = mail;
-        this.personApiKey = new ApiKeyFactory().generate(30);
     }
-    public Person() {
-        this.personApiKey = new ApiKeyFactory().generate(30);
+
+    public Person(){
+
     }
 
 }
