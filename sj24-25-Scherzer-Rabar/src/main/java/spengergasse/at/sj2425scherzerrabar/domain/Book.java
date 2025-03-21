@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import spengergasse.at.sj2425scherzerrabar.commands.BookCommand;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookGenreConverter;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
@@ -61,8 +62,73 @@ public class Book {
         this.bookTypes = bookTypes;
     }
 
+
     public void addAuthor(Author a){
         this.authors.add(a);
+    }
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public @NotNull Boolean getAvailableOnline() {
+        return availableOnline;
+    }
+
+    public void setAvailableOnline(@NotNull Boolean availableOnline) {
+        this.availableOnline = availableOnline;
+    }
+
+    public List<BookType> getBookTypes() {
+        return bookTypes;
+    }
+
+    public void setBookTypes(List<BookType> bookTypes) {
+        this.bookTypes = bookTypes;
+    }
+
+    public @NotNull @Min(100) @Max(Integer.MAX_VALUE) Integer getWordCount() {
+        return wordCount;
+    }
+
+    public void setWordCount(@NotNull @Min(100) @Max(Integer.MAX_VALUE) Integer wordCount) {
+        this.wordCount = wordCount;
+    }
+
+    public List<BookGenre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<BookGenre> genres) {
+        this.genres = genres;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     @Embeddable
