@@ -45,6 +45,46 @@ public class Copy {
         this.copyApiKey = new ApiKeyFactory().generate(30);
     }
 
+    public ApiKey getCopyApiKey() {
+        return copyApiKey;
+    }
+
+    public void setCopyApiKey(ApiKey copyApiKey) {
+        this.copyApiKey = copyApiKey;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public BookType getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(BookType bookType) {
+        this.bookType = bookType;
+    }
+
+    public Integer getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(Integer pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     @Embeddable
     record CopyId (@GeneratedValue @NotNull Long id){}
 }

@@ -41,7 +41,7 @@ class BookServiceTest {
     @Test
     void cant_create_book_with_missing_author(){
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.empty());
-        assertThatThrownBy(()-> bookService.createBook(new BookCommand(new ApiKey("BookApiKeys"),"name", LocalDate.now(),true, List.of(BookType.EBOOK),489,"cooler Book", List.of(new ApiKey("AuthorApiKey")),List.of(BookGenre.COMICS)))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(()-> bookService.createBook(new BookCommand(new ApiKey("BookApiKeys"),"name", LocalDate.now(),true, List.of(BookType.EBOOK),489,"cooler Book", List.of(new ApiKey("AuthorApiKey")),List.of(BookGenre.COMICS)))).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -161,8 +161,6 @@ class BookServiceTest {
         assertThatThrownBy(() -> bookService.getBook(new ApiKey("invalidApiKey")))
                 .isInstanceOf(NoSuchElementException.class);
     }
-
-
 
 /*
     @Test

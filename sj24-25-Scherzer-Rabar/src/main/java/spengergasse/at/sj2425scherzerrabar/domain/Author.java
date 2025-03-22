@@ -57,5 +57,4 @@ public class Author extends Person {
     public void setAddress(List<Address> address) {
         this.address = address;
     }
-
 }

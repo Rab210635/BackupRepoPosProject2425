@@ -38,6 +38,38 @@ public class Library {
         this.booksInLibraries = booksInLibraries;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ApiKey getLibraryApiKey() {
+        return libraryApiKey;
+    }
+
+    public void setLibraryApiKey(ApiKey libraryApiKey) {
+        this.libraryApiKey = libraryApiKey;
+    }
+
+    public Address getHeadquarters() {
+        return headquarters;
+    }
+
+    public void setHeadquarters(Address headquarters) {
+        this.headquarters = headquarters;
+    }
+
+    public List<BookInLibraries> getBooksInLibraries() {
+        return booksInLibraries;
+    }
+
+    public void setBooksInLibraries(List<BookInLibraries> booksInLibraries) {
+        this.booksInLibraries = booksInLibraries;
+    }
+
     @Embeddable
     record LibraryId (@GeneratedValue @NotNull Long id){}
 

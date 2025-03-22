@@ -82,4 +82,8 @@ public class FixturesFactory {
         return new Copy(dornbund(address2()),BookType.PAPERBACK,244,book(author()));
     }
 
+    public static Borrowing borrowing(Customer customer, List<Copy> copies){
+        return new Borrowing(customer,copies,LocalDate.of(2000,2,2),0);
+    }
+
 }

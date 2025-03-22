@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 @Embeddable
 public class BookInLibraries {
@@ -24,5 +26,33 @@ public class BookInLibraries {
     }
     public  BookInLibraries(){
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        BookInLibraries that = (BookInLibraries) o;
+        return Objects.equals(book, that.book) && Objects.equals(borrowLengthDays, that.borrowLengthDays);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(book, borrowLengthDays);
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Integer getBorrowLengthDays() {
+        return borrowLengthDays;
+    }
+
+    public void setBorrowLengthDays(Integer borrowLengthDays) {
+        this.borrowLengthDays = borrowLengthDays;
     }
 }

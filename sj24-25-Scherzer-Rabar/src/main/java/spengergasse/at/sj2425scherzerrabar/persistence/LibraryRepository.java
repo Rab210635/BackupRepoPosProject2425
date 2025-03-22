@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface LibraryRepository extends JpaRepository<Library, Integer> {
     public Optional<Library> findLibraryByLibraryApiKey(String apiKey);
 
+    public Optional<Library> findLibraryByName(String name);
 }
