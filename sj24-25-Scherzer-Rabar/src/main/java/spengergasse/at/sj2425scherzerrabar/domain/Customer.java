@@ -23,4 +23,20 @@ public class Customer extends Person {
         super();
         customerApiKey = new ApiKeyFactory().generate(30);
     }
+
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
+
+    public ApiKey getCustomerApiKey() {
+        return customerApiKey;
+    }
+
+    public void setCustomerApiKey(ApiKey customerApiKey) {
+        this.customerApiKey = customerApiKey;
+    }
 }

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.testcontainers.shaded.org.bouncycastle.math.ec.FixedPointUtil;
+import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.TestcontainersConfiguration;
 import spengergasse.at.sj2425scherzerrabar.domain.*;
 
@@ -22,9 +24,9 @@ class BorrowingRepositoryTest {
     void can_save(){
         //arrange
         var adresse = new Address("spengergasse 20","Vienna",1010);
-        var email = new EmailAddress("mail@mail.com");
-        var author = new Author("Max","Mustermann",List.of(adresse), email, "dada");
-        var book = new Book("dasd", LocalDate.of(2000,5,5),true,1250,List.of(BookGenre.ROMANCE),List.of(author),List.of(BookType.EBOOK));
+        var email = FixturesFactory.emailAddress();
+        var author = FixturesFactory.author();
+        var book = FixturesFactory.book(author);
         var publisher = new Publisher();
         var customer = new Customer("Max","Mustermann", email,List.of(adresse));
         var copy = new Copy(publisher,BookType.PAPERBACK,244,book);

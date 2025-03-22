@@ -32,6 +32,7 @@ public class Borrowing {
     @Min(1)
     private int extendedByDays;
 
+
     public Borrowing() {
         this.borrowingApiKey = new ApiKeyFactory().generate(30);
     }
@@ -44,6 +45,37 @@ public class Borrowing {
         this.extendedByDays = extendedByDays;
     }
 
+    public ApiKey getBorrowingApiKey() {
+        return borrowingApiKey;
+    }
+    public void setBorrowingApiKey(ApiKey borrowingApiKey) {
+        this.borrowingApiKey = borrowingApiKey;
+    }
+    public Customer getCustomer() {
+        return customer;
+    }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    public List<Copy> getCopies() {
+        return copies;
+    }
+    public void setCopies(List<Copy> copies) {
+        this.copies = copies;
+    }
+    public LocalDate getFromDate() {
+        return fromDate;
+    }
+    public void setFromDate(LocalDate fromDate) {
+        this.fromDate = fromDate;
+    }
+    public int getExtendedByDays() {
+        return extendedByDays;
+    }
+    public void setExtendedByDays(int extendedByDays) {
+        this.extendedByDays = extendedByDays;
+
+    }
 
     @Embeddable
     record BorrowingId (@GeneratedValue @NotNull Long id){}

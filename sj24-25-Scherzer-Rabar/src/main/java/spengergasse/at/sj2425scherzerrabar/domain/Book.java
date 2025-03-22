@@ -51,7 +51,7 @@ public class Book {
         this.bookApiKey = new ApiKeyFactory().generate(30);
     }
 
-    public Book(String name, LocalDate releaseDate, Boolean availableOnline, Integer wordCount, List<BookGenre> genres, List<Author> authors, List<BookType> bookTypes) {
+    public Book(String name, LocalDate releaseDate, Boolean availableOnline, Integer wordCount, List<BookGenre> genres, List<Author> authors, List<BookType> bookTypes, String description) {
         this.bookApiKey = new ApiKeyFactory().generate(30);
         this.name = name;
         this.releaseDate = releaseDate;
@@ -60,6 +60,7 @@ public class Book {
         this.genres = genres;
         this.authors = authors;
         this.bookTypes = bookTypes;
+        this.description = description;
     }
 
 
@@ -129,6 +130,14 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public ApiKey getBookApiKey() {
+        return bookApiKey;
+    }
+
+    public void setBookApiKey(ApiKey bookApiKey) {
+        this.bookApiKey = bookApiKey;
     }
 
     @Embeddable

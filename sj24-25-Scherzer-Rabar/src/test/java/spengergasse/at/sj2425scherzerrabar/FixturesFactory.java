@@ -41,7 +41,8 @@ public class FixturesFactory {
                 1250,
                 List.of(BookGenre.ROMANCE),
                 List.of(author),
-                List.of(BookType.EBOOK));
+                List.of(BookType.EBOOK),
+                "Eine Beschreibung");
     }
 
     public static BookInLibraries libBook(Book b){

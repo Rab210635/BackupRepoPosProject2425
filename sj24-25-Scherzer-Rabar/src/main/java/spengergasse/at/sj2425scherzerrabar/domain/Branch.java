@@ -14,7 +14,11 @@ public class Branch {
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_branches_2_library"))
     private Library library;
+
+    @Embedded
     private Address address;
+
+
 
     @Embeddable
     record BranchId (@GeneratedValue @NotNull Long id){}
@@ -26,6 +30,30 @@ public class Branch {
     public Branch( Library library, Address address) {
         this.branchApiKey = new ApiKeyFactory().generate(30);
         this.library = library;
+        this.address = address;
+    }
+
+    public ApiKey getBranchApiKey() {
+        return branchApiKey;
+    }
+
+    public void setBranchApiKey(ApiKey branchApiKey) {
+        this.branchApiKey = branchApiKey;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
         this.address = address;
     }
 }

@@ -18,6 +18,7 @@ public class Library {
     private ApiKey libraryApiKey;
 
     @NotNull
+    @Embedded
     private Address headquarters;
 
     @ElementCollection

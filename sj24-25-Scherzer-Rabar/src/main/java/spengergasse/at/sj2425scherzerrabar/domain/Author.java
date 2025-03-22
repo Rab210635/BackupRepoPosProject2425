@@ -33,4 +33,28 @@ public class Author extends Person {
 
         this.authorApiKey = new ApiKeyFactory().generate(30);
     }
+
+    public String getPenname() {
+        return penname;
+    }
+
+    public void setPenname(String penname) {
+        this.penname = penname;
+    }
+
+    public ApiKey getAuthorApiKey() {
+        return authorApiKey;
+    }
+
+    public void setAuthorApiKey(ApiKey authorApiKey) {
+        this.authorApiKey = authorApiKey;
+    }
+
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
 }

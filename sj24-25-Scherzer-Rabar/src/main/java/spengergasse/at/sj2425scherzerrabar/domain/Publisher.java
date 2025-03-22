@@ -17,6 +17,7 @@ public class Publisher  {
     @NotNull
     private String name;
     @NotNull
+    @Embedded
     private Address address;
 
     public Publisher() {
