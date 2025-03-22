@@ -36,4 +36,35 @@ public class Person {
 
     }
 
+    public PersonId getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(PersonId personId) {
+        this.personId = personId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public EmailAddress getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(EmailAddress emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 }
