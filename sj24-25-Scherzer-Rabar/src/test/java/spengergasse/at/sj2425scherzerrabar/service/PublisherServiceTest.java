@@ -1,0 +1,155 @@
+package spengergasse.at.sj2425scherzerrabar.service;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
+import spengergasse.at.sj2425scherzerrabar.commands.PublisherCommand;
+import spengergasse.at.sj2425scherzerrabar.domain.Address;
+import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
+import spengergasse.at.sj2425scherzerrabar.domain.Publisher;
+import spengergasse.at.sj2425scherzerrabar.dtos.PublisherDto;
+import spengergasse.at.sj2425scherzerrabar.persistence.PublisherRepository;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class PublisherServiceTest {
+    private @Mock PublisherRepository publisherRepository;
+
+    private PublisherService publisherService;
+
+    @BeforeEach
+    void setUp() {
+        publisherService = new PublisherService(publisherRepository);
+    }
+
+
+    @Test
+    void can_create_publisher() {
+        // Arrange
+        Address address = FixturesFactory.address2();
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "New Publisher", address);
+        when(publisherRepository.save(any(Publisher.class))).then(AdditionalAnswers.returnsFirstArg());
+
+        // Act
+        PublisherDto publisherDto = publisherService.createPublisher(command);
+
+        // Assert
+        assertThat(publisherDto).isNotNull();
+        assertThat(publisherDto.name()).isEqualTo("New Publisher");
+    }
+
+    @Test
+    void cant_delete_non_existing_publisher() {
+        // Arrange
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> publisherService.deletePublisherByApiKey("invalidApiKey"))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("Publisher not found");
+    }
+
+    @Test
+    void can_delete_existing_publisher() {
+        // Arrange
+        Publisher publisher = FixturesFactory.publisher(FixturesFactory.address2());
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.of(publisher));
+
+        // Act
+        publisherService.deletePublisherByApiKey("validApiKey");
+
+        // Assert
+        verify(publisherRepository, times(1)).delete(publisher);
+    }
+
+    @Test
+    void cant_update_non_existing_publisher() {
+        // Arrange
+        Address address = FixturesFactory.address2();
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "Updated Publisher", address);
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> publisherService.updatePublisherByApiKey(command))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("Publisher not found");
+    }
+
+    @Test
+    void can_update_existing_publisher() {
+        // Arrange
+        Address address = FixturesFactory.address2();
+        Publisher publisher = FixturesFactory.publisher(address);
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "Updated Publisher", new Address("New Street", "New City", 5432));
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.of(publisher));
+        when(publisherRepository.save(any(Publisher.class))).then(AdditionalAnswers.returnsFirstArg());
+
+        // Act
+        PublisherDto updatedPublisher = publisherService.updatePublisherByApiKey(command);
+
+        // Assert
+        assertThat(updatedPublisher).isNotNull();
+        assertThat(updatedPublisher.name()).isEqualTo("Updated Publisher");
+        assertThat(updatedPublisher.address().city()).isEqualTo("New City");
+    }
+
+    @Test
+    void can_get_publisher_by_api_key() {
+        // Arrange
+        Publisher publisher = FixturesFactory.publisher(FixturesFactory.address2());
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.of(publisher));
+
+        // Act
+        PublisherDto publisherDto = publisherService.getPublisherByApiKey("validApiKey");
+
+        // Assert
+        assertThat(publisherDto).isNotNull();
+        assertThat(publisherDto.name()).isEqualTo("Dornbund");
+    }
+
+    @Test
+    void cant_get_non_existing_publisher() {
+        // Arrange
+        when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> publisherService.getPublisherByApiKey("invalidApiKey"))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("Publisher not found");
+    }
+
+    @Test
+    void can_get_all_publishers() {
+        // Arrange
+        Publisher publisher1 = FixturesFactory.publisher(FixturesFactory.address2());
+        Publisher publisher2 = FixturesFactory.publisher(FixturesFactory.libraryAddress());
+        when(publisherRepository.findAll()).thenReturn(List.of(publisher1, publisher2));
+
+        // Act
+        List<PublisherDto> publishers = publisherService.getAllPublishers();
+
+        // Assert
+        assertThat(publishers).hasSize(2);
+    }
+
+    @Test
+    void can_get_publisher_by_name(){
+        Publisher publisher = FixturesFactory.publisher(FixturesFactory.address2());
+        when(publisherRepository.findPublisherByName(any())).thenReturn(Optional.of(publisher));
+        PublisherDto publisherDto = publisherService.getPublisherByName("Dornbund");
+        assertThat(publisherDto).isNotNull();
+        assertThat(publisherDto.name()).isEqualTo("Dornbund");
+    }
+}

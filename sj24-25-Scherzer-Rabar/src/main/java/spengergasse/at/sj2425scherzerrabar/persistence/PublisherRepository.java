@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
     public Optional<Publisher> findPublisherByPublisherApiKey(String apiKey);
+
+    public Optional<Publisher> findPublisherByName(String name);
 }

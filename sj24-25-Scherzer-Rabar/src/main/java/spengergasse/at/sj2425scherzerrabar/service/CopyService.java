@@ -2,13 +2,10 @@ package spengergasse.at.sj2425scherzerrabar.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spengergasse.at.sj2425scherzerrabar.commands.BookCommand;
 import spengergasse.at.sj2425scherzerrabar.commands.CopyCommand;
-import spengergasse.at.sj2425scherzerrabar.commands.PublisherCommand;
 import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
 import spengergasse.at.sj2425scherzerrabar.domain.BookType;
 import spengergasse.at.sj2425scherzerrabar.domain.Copy;
-import spengergasse.at.sj2425scherzerrabar.domain.Publisher;
 import spengergasse.at.sj2425scherzerrabar.dtos.CopyDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.BookRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.CopyRepository;
@@ -17,7 +14,6 @@ import spengergasse.at.sj2425scherzerrabar.persistence.PublisherRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly=true)
