@@ -32,4 +32,36 @@ public class Publisher  {
 
     @Embeddable
     record PublisherId (@GeneratedValue @NotNull Long id){}
+
+    public PublisherId getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(PublisherId publisherId) {
+        this.publisherId = publisherId;
+    }
+
+    public ApiKey getPublisherApiKey() {
+        return publisherApiKey;
+    }
+
+    public void setPublisherApiKey(ApiKey publisherApiKey) {
+        this.publisherApiKey = publisherApiKey;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }

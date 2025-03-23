@@ -21,7 +21,7 @@ class PublisherRepositoryTest {
     @Test
     void can_save() {
         var address = FixturesFactory.address2();
-        Publisher publisher = FixturesFactory.dornbund(address);
+        Publisher publisher = FixturesFactory.publisher(address);
 
         var savedPublisher = publisherRepository.save(publisher);
 

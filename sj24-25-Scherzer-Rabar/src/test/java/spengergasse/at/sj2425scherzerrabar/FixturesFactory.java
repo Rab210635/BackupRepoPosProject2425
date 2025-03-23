@@ -58,11 +58,11 @@ public class FixturesFactory {
 
 
     public static Review review(){
-        return new Review("dasds",5,"dasdsa",customer(),book(author()),filiale(),dornbund(address2()));
+        return new Review("dasds",5,"dasdsa",customer(),book(author()),filiale(),publisher(address2()));
 
     }
 
-    public static Publisher dornbund(Address address) {
+    public static Publisher publisher(Address address) {
         return new Publisher("Dornbund",address);
     }
 
@@ -79,7 +79,7 @@ public class FixturesFactory {
     }
 
     public static Copy copy(){
-        return new Copy(dornbund(address2()),BookType.PAPERBACK,244,book(author()));
+        return new Copy(publisher(address2()),BookType.PAPERBACK,244,book(author()));
     }
 
     public static Borrowing borrowing(Customer customer, List<Copy> copies){
