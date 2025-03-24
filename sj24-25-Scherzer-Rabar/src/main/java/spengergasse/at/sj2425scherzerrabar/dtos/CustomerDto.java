@@ -8,10 +8,12 @@ import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
 import java.util.List;
 import java.util.stream.Stream;
 
-public record CustomerDto(ApiKey apiKey, List<Address> addresses, String firstName, String lastName, EmailAddress emailAddress) {
+public record CustomerDto(String apiKey, List<String> addresses, String firstName,
+                          String lastName, String emailAddress) {
     public static CustomerDto customerDtoFromCustomer(Customer customer) {
         return new CustomerDto(
-          customer.getCustomerApiKey(), customer.getAddress(), customer.getFirstName(), customer.getLastName(), customer.getEmailAddress()
+          customer.getCustomerApiKey().apiKey(), customer.getAddress().stream().map(Address::toString).toList() ,
+                customer.getFirstName(), customer.getLastName(), customer.getEmailAddress().email()
         );
     }
 }

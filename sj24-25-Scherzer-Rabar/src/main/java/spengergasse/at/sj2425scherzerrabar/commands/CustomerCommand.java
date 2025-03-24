@@ -6,5 +6,7 @@ import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
 
 import java.util.List;
 
-public record CustomerCommand(ApiKey apiKey, List<Address> addresses, String firstName, String lastName, EmailAddress emailAddress) {
+public record CustomerCommand(
+        String apiKey, List<String> addresses, String firstName,
+        String lastName, String emailAddress) {
 }

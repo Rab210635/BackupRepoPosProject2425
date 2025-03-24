@@ -49,6 +49,46 @@ public class Order {
 
     }
 
+    public ApiKey getOrderApiKey() {
+        return orderApiKey;
+    }
+
+    public void setOrderApiKey(ApiKey orderApiKey) {
+        this.orderApiKey = orderApiKey;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<LibrarySubscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<LibrarySubscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public List<BuyableBook> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BuyableBook> books) {
+        this.books = books;
+    }
+
     @Embeddable
     record OrderId(@GeneratedValue @NotNull Long id){}
 }

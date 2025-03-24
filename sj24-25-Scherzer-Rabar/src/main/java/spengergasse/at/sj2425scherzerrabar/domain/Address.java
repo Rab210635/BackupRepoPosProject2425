@@ -26,6 +26,16 @@ public record Address (String streetAndNumber, String city, Integer zip) {
         this.zip = zip;
     }
 
+    @Override
+    public String toString() {
+        return streetAndNumber + "-" + city + '-' + zip;
+    }
+
+    public static Address addressFromString(String address) {
+       var addressAttributes = address.split("-");
+       return new Address(addressAttributes[0], addressAttributes[1], Integer.parseInt(addressAttributes[2]));
+    }
+
     public static class AddressException extends RuntimeException {
         public AddressException(String message) {
             super(message);

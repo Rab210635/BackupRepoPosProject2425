@@ -140,6 +140,8 @@ public class Book {
         this.bookApiKey = bookApiKey;
     }
 
+
+
     @Embeddable
     public record BookId (@GeneratedValue @NotNull Long id){}
     

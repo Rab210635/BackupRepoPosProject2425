@@ -1,14 +1,19 @@
 package spengergasse.at.sj2425scherzerrabar.dtos;
 
-import spengergasse.at.sj2425scherzerrabar.domain.Address;
-import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
-import spengergasse.at.sj2425scherzerrabar.domain.BookInLibraries;
+import spengergasse.at.sj2425scherzerrabar.domain.Library;
 
 import java.util.List;
 
 public record LibraryDto(
-        ApiKey apiKey,
+        String apiKey,
         String name,
-        Address headquarters,
-        List<BookInLibraries> booksInLibraries
-) {}
+        String headquarters,
+        List<BookInLibrariesDto> booksInLibraries
+) {
+    public static LibraryDto libraryDtoFromLibrary(Library library) {
+        return new LibraryDto(
+          library.getLibraryApiKey().apiKey(), library.getName(), library.getHeadquarters().toString(),
+          library.getBooksInLibraries().stream().map(BookInLibrariesDto::bookInLibrariesDtoFromBookInLibraries).toList()
+        );
+    }
+}

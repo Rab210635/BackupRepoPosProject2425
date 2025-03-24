@@ -7,11 +7,11 @@ import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
 import java.util.List;
 
 public record AuthorCommand(
-        ApiKey apiKey,
+        String apiKey,
         String penname,
-        List<Address> address,
+        List<String> address,
         String firstname,
         String lastname,
-        EmailAddress emailAddress
+        String emailAddress
 )
 {}

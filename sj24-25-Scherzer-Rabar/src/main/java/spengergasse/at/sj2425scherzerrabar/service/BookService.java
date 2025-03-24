@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spengergasse.at.sj2425scherzerrabar.commands.BookCommand;
-import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
-import spengergasse.at.sj2425scherzerrabar.domain.Author;
-import spengergasse.at.sj2425scherzerrabar.domain.Book;
-import spengergasse.at.sj2425scherzerrabar.domain.Borrowing;
+import spengergasse.at.sj2425scherzerrabar.domain.*;
 import spengergasse.at.sj2425scherzerrabar.dtos.BookDto;
 import spengergasse.at.sj2425scherzerrabar.dtos.BorrowingDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.AuthorRepository;
@@ -34,7 +31,7 @@ public class BookService {
     @Transactional
     public BookDto createBook(BookCommand command) {
         List<Author> authors = command.authorIds().stream()
-                .map(x -> authorRepository.findAuthorByAuthorApiKey(x.apiKey()))
+                .map(authorRepository::findAuthorByAuthorApiKey)
                 .flatMap(Optional::stream)
                 .toList();
         if (authors.isEmpty()) {
@@ -42,9 +39,11 @@ public class BookService {
         }
         LocalDate released = command.releaseDate();
         Book book = new Book(
-                command.name(), command.releaseDate(), command.availableOnline(), command.wordCount(), command.genre(), authors, command.types(), command.description()
+                command.name(), command.releaseDate(), command.availableOnline(), command.wordCount(),
+                command.genre().stream().map(BookGenre::valueOf).toList()
+                , authors, command.types().stream().map(BookType::valueOf).toList(), command.description()
         );
-        return toDto( bookRepository.save(book));
+        return BookDto.bookDtoFromBook( bookRepository.save(book));
     }
 
     @Transactional
@@ -57,28 +56,27 @@ public class BookService {
 
     @Transactional
     public void updateBook(BookCommand command) {
-        bookRepository.findBookByBookApiKey(command.apiKey().apiKey()).map((Book b)->{
-            if(!b.getName().equals(command.name()))
-                b.setName(command.name());
-            if(b.getAvailableOnline() != command.availableOnline())
-                b.setAvailableOnline(command.availableOnline());
-            if(b.getBookTypes() != command.types())
-                b.setBookTypes(command.types());
-            if(b.getGenres() != command.genre())
-                b.setGenres(command.genre());
-            if(!b.getDescription().equals(command.description()))
-                b.setDescription(command.description());
-            if(b.getReleaseDate() != command.releaseDate())
-                b.setReleaseDate(command.releaseDate());
-
+        bookRepository.findBookByBookApiKey(command.apiKey()).map((Book b)->{
             List<Author> authors = command.authorIds().stream()
-                    .map(Record::toString)
                     .map(authorRepository::findAuthorByAuthorApiKey)
                     .flatMap(Optional::stream)
                     .toList();
             if(authors.isEmpty()){
                 throw new NoSuchElementException("Author not found");
             }
+            if(!b.getName().equals(command.name()))
+                b.setName(command.name());
+            if(b.getAvailableOnline() != command.availableOnline()) {
+                b.setAvailableOnline(command.availableOnline());
+
+            }
+            if(!b.getDescription().equals(command.description()))
+                b.setDescription(command.description());
+            if(b.getReleaseDate() != command.releaseDate())
+                b.setReleaseDate(command.releaseDate());
+
+            b.setBookTypes(command.types().stream().map(BookType::valueOf).toList());
+            b.setGenres(command.genre().stream().map(BookGenre::valueOf).toList());
             b.setAuthors(authors);
             //if(b.getAuthors())
             bookRepository.save(b);
@@ -98,28 +96,15 @@ public class BookService {
         } else {
             books = bookRepository.findAll();
         }
-        return books.stream().map(book -> toDto(book)).toList();
+        return books.stream().map(BookDto::bookDtoFromBook).toList();
     }
 
     public BookDto getBook(ApiKey bookApiKey) {
         Optional<Book> returnValue = bookRepository.findBookByBookApiKey(bookApiKey.apiKey());
         if(returnValue.isPresent()) {
-            return toDto(returnValue.get());
+            return BookDto.bookDtoFromBook(returnValue.get());
         }
         throw new NoSuchElementException("Book not found");
     }
 
-    private BookDto toDto(Book book) {
-        return new BookDto(
-                book.getBookApiKey(),
-                book.getName(),
-                book.getReleaseDate(),
-                book.getAvailableOnline(),
-                book.getBookTypes(),
-                book.getWordCount(),
-                book.getDescription(),
-                book.getAuthors().stream().map(Author::getAuthorApiKey).toList(),
-                book.getGenres()
-        );
-    }
 }

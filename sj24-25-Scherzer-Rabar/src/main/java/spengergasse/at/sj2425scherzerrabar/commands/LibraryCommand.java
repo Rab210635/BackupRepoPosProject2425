@@ -8,8 +8,8 @@ import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
 import java.util.List;
 
 public record LibraryCommand(
-        ApiKey apiKey,
+        String apiKey,
         String name,
-        Address headquarters,
-        List<BookInLibraries> booksInLibraries
+        String headquarters,
+        List<BookInLibrariesCommand> booksInLibraries
 ) {}
