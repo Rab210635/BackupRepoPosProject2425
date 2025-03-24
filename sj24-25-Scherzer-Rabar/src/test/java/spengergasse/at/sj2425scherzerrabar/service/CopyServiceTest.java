@@ -58,7 +58,7 @@ class CopyServiceTest {
         when(copyRepository.save(any(Copy.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var copy = copyService.createCopy(new CopyCommand(
-                new ApiKey("apiKey"), new ApiKey("publisherApiKey"), BookType.EBOOK,12,new ApiKey("bookApiKey")
+                "apiKey", "publisherApiKey", BookType.EBOOK,12,"bookApiKey",100f
         ));
 
         assertThat(copy).isNotNull();
@@ -70,16 +70,16 @@ class CopyServiceTest {
 
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(book));
 
-        assertThatThrownBy(()-> copyService.createCopy(new CopyCommand(new ApiKey("apiKey"), new ApiKey("publisherApiKey"),
-                BookType.EBOOK,12,new ApiKey("bookApiKey"))))
+        assertThatThrownBy(()-> copyService.createCopy(new CopyCommand("apiKey", "publisherApiKey",
+                BookType.EBOOK,12,"bookApiKey",100f)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Publisher not found");
     }
 
     @Test
     void cant_create_copy_with_missing_book() {
-        assertThatThrownBy(()-> copyService.createCopy(new CopyCommand(new ApiKey("apiKey"), new ApiKey("publisherApiKey"),
-                BookType.EBOOK,12,new ApiKey("bookApiKey"))))
+        assertThatThrownBy(()-> copyService.createCopy(new CopyCommand("apiKey", "publisherApiKey",
+                BookType.EBOOK,12,"bookApiKey",100f)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Book not found");
     }
@@ -111,7 +111,7 @@ class CopyServiceTest {
         when(copyRepository.save(any(Copy.class))).then(AdditionalAnswers.returnsFirstArg());
 
         copyService.updateCopy(new CopyCommand(
-                new ApiKey("copyApiKey"),new ApiKey("publisherApiKey"),BookType.EBOOK,12,new ApiKey("BookApiKey")
+                "copyApiKey","publisherApiKey",BookType.EBOOK,12,"BookApiKey",100f
         ));
 
         verify(copyRepository,times(1)).save(any(Copy.class));
@@ -121,8 +121,8 @@ class CopyServiceTest {
 
     @Test
     void cant_update_not_existing_copy() {
-        assertThatThrownBy(()-> copyService.updateCopy(new CopyCommand(new ApiKey("copyApiKey"),
-                new ApiKey("publisherApiKey"),BookType.EBOOK,12,new ApiKey("BookApiKey"))))
+        assertThatThrownBy(()-> copyService.updateCopy(new CopyCommand("copyApiKey",
+                "publisherApiKey",BookType.EBOOK,12,"BookApiKey",100f)))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -135,7 +135,7 @@ class CopyServiceTest {
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(book));
 
         assertThatThrownBy(()-> copyService.updateCopy(new CopyCommand(
-                new ApiKey("copyApiKey"),new ApiKey("publisherApiKey"),BookType.EBOOK,12,new ApiKey("BookApiKey"))))
+                "copyApiKey","publisherApiKey",BookType.EBOOK,12,"BookApiKey",100f)))
         .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("Publisher not found");
     }
@@ -147,7 +147,7 @@ class CopyServiceTest {
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.of(copy));
 
         assertThatThrownBy(()-> copyService.updateCopy(new CopyCommand(
-                new ApiKey("copyApiKey"),new ApiKey("publisherApiKey"),BookType.EBOOK,12,new ApiKey("BookApiKey"))))
+                "copyApiKey","publisherApiKey",BookType.EBOOK,12,"BookApiKey",100f)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Book not found");
     }

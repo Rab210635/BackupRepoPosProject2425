@@ -14,8 +14,6 @@ public class Person {
     protected String lastName;
 
 
-
-
     @Embedded
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_email_2_person"))
     protected EmailAddress emailAddress;

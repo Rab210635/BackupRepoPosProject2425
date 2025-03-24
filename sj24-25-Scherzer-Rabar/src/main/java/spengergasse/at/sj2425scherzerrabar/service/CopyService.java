@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly=true)
 public class CopyService {
 
-    private CopyRepository copyRepository;
-    private BookRepository bookRepository;
-    private PublisherRepository publisherRepository;
+    private final CopyRepository copyRepository;
+    private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
     public CopyService(CopyRepository copyRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.copyRepository = copyRepository;
@@ -31,11 +31,11 @@ public class CopyService {
 
     @Transactional
     public CopyDto createCopy(CopyCommand command) {
-        var book = bookRepository.findBookByBookApiKey(command.bookApiKey().apiKey());
+        var book = bookRepository.findBookByBookApiKey(command.bookApiKey());
         if(book.isEmpty()) {
             throw new NoSuchElementException("Book not found");
         }
-        var publisher = publisherRepository.findPublisherByPublisherApiKey(command.publisherApiKey().apiKey());
+        var publisher = publisherRepository.findPublisherByPublisherApiKey(command.publisherApiKey());
         if(publisher.isEmpty()) {
             throw new NoSuchElementException("Publisher not found");
         }
@@ -53,19 +53,19 @@ public class CopyService {
 
     @Transactional
     public void updateCopy(CopyCommand command) {
-        var copy = copyRepository.findCopyByCopyApiKey(command.apiKey().apiKey()).map((Copy c)->{
+        var copy = copyRepository.findCopyByCopyApiKey(command.apiKey()).map((Copy c)->{
             if(!c.getBookType().equals(command.bookType())) {
                 c.setBookType(command.bookType());
             }
             if(!c.getPageCount().equals(command.pageCount())) {
                 c.setPageCount(command.pageCount());
             }
-            if(!c.getBook().getBookApiKey().apiKey().equals(command.bookApiKey().apiKey())) {
-                   bookRepository.findBookByBookApiKey(command.bookApiKey().apiKey())
+            if(!c.getBook().getBookApiKey().apiKey().equals(command.bookApiKey())) {
+                   bookRepository.findBookByBookApiKey(command.bookApiKey())
                            .ifPresentOrElse(c::setBook,()->{throw new NoSuchElementException("Book not found");} );
             }
-            if(!c.getPublisher().getPublisherApiKey().apiKey().equals(command.publisherApiKey().apiKey())) {
-                publisherRepository.findPublisherByPublisherApiKey(command.publisherApiKey().apiKey())
+            if(!c.getPublisher().getPublisherApiKey().apiKey().equals(command.publisherApiKey())) {
+                publisherRepository.findPublisherByPublisherApiKey(command.publisherApiKey())
                         .ifPresentOrElse(c::setPublisher,()->{throw new NoSuchElementException("Publisher not found");} );
             }
             copyRepository.save(c);

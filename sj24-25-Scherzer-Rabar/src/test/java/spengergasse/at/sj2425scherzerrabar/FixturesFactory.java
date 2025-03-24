@@ -27,7 +27,7 @@ public class FixturesFactory {
     }
 
     public static BuyableBook buyableBook() {
-        return new BuyableBook(book(author()), BookType.EBOOK,4.5f);
+        return new BuyableBook(publisher(address2()),BookType.EBOOK,500,book(author()),4.5f);
     }
 
     public static Author author() {

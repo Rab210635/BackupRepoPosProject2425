@@ -9,31 +9,15 @@ import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConvert
 
 @Entity
 @Table(name = "copy")
-public class Copy {
+public class Copy extends BookSpecification {
     @EmbeddedId
     private CopyId copyId;
     @Embedded
     private ApiKey copyApiKey;
-    @NotNull
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_copies_2_publisher"))
-    private Publisher publisher;
-
-    @NotNull
-    @Column(columnDefinition = BookTypeConverter.COLUMN_DEFINITION)
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_copy_2_book_type"))
-    private BookType bookType;
-    @NotNull
-    @Min(3)
-    @Max(Integer.MAX_VALUE)
-    private Integer pageCount;
-    @NotNull
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_copies_2_book"))
-    private Book book;
 
 
     public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book) {
+        super(publisher,bookType,pageCount,book);
         this.copyApiKey = new ApiKeyFactory().generate(30);
         this.publisher = publisher;
         this.bookType = bookType;
