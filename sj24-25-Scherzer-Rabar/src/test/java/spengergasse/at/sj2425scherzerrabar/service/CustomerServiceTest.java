@@ -52,7 +52,7 @@ class CustomerServiceTest {
         Customer customer = FixturesFactory.customer();
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.of(customer));
 
-        customerService.deleteCustomer(new ApiKey("validApiKey"));
+        customerService.deleteCustomer(new ApiKey("validApiKey").apiKey());
 
         verify(customerRepository, times(1)).delete(customer);
     }
@@ -60,7 +60,7 @@ class CustomerServiceTest {
     @Test
     void cant_delete_not_existing_customer(){
         ApiKey apiKey = new ApiKey("customerApiKey");
-        assertThatThrownBy(()->customerService.deleteCustomer(apiKey)).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(()->customerService.deleteCustomer(apiKey.apiKey())).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -90,14 +90,14 @@ class CustomerServiceTest {
     void can_get_existing_customer(){
         Customer customer = FixturesFactory.customer();
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.of(customer));
-        var customer1 = customerService.getCustomer(customer.getCustomerApiKey());
+        var customer1 = customerService.getCustomer(customer.getCustomerApiKey().apiKey());
         assertThat(customer1).isEqualTo(CustomerDto.customerDtoFromCustomer(customer));
         verify(customerRepository, times(1)).findCustomerByCustomerApiKey(any());
     }
 
     @Test
     void cant_get_not_existing_customer(){
-        assertThatThrownBy(()->customerService.getCustomer(new ApiKey("customerApiKey"))).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(()->customerService.getCustomer(new ApiKey("customerApiKey").apiKey())).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test

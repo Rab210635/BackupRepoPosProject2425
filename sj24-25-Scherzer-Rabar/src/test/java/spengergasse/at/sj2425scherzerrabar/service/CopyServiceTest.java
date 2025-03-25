@@ -89,14 +89,14 @@ class CopyServiceTest {
         var copy = FixturesFactory.copy();
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.of(copy));
 
-        copyService.deleteCopy(new ApiKey("validApiKey"));
+        copyService.deleteCopy(new ApiKey("validApiKey").apiKey());
 
         verify(copyRepository,times(1)).delete(copy);
     }
 
     @Test
     void cant_delete_not_existing_copy() {
-      assertThatThrownBy(()->copyService.deleteCopy(new ApiKey("validApiKey"))).isInstanceOf(NoSuchElementException.class);
+      assertThatThrownBy(()->copyService.deleteCopy(new ApiKey("validApiKey").apiKey())).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -186,14 +186,14 @@ class CopyServiceTest {
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(book));
         when(copyRepository.getCopiesByBook_BookApiKey(book.getBookApiKey())).thenReturn(List.of(copy,copy1));
 
-        var copies = copyService.getCopiesByBook(book.getBookApiKey());
+        var copies = copyService.getCopiesByBook(book.getBookApiKey().apiKey());
 
         assertThat(copies).hasSize(2);
     }
 
     @Test
     void cant_get_copies_with_missing_book() {
-       assertThatThrownBy(()->copyService.getCopiesByBook(new ApiKey("bookApiKey")))
+       assertThatThrownBy(()->copyService.getCopiesByBook(new ApiKey("bookApiKey").apiKey()))
                .isInstanceOf(NoSuchElementException.class)
                .hasMessageContaining("Book not found");
     }
@@ -206,14 +206,14 @@ class CopyServiceTest {
         when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.of(publisher));
         when(copyRepository.getCopiesByPublisher_PublisherApiKey(publisher.getPublisherApiKey())).thenReturn(List.of(copy,copy1));
 
-        var copies = copyService.getCopiesByPublisher(publisher.getPublisherApiKey());
+        var copies = copyService.getCopiesByPublisher(publisher.getPublisherApiKey().apiKey());
 
         assertThat(copies).hasSize(2);
     }
 
     @Test
     void cant_get_copies_with_missing_publisher() {
-        assertThatThrownBy(()->copyService.getCopiesByPublisher(new ApiKey("publisherApiKey")))
+        assertThatThrownBy(()->copyService.getCopiesByPublisher(new ApiKey("publisherApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Publisher not found");
     }
@@ -224,7 +224,7 @@ class CopyServiceTest {
         Copy copy1 = FixturesFactory.copy();
         when(copyRepository.getCopiesByBookType(BookType.PAPERBACK)).thenReturn(List.of(copy,copy1));
 
-        var copies = copyService.getCopiesByBookType(BookType.PAPERBACK);
+        var copies = copyService.getCopiesByBookType(BookType.PAPERBACK.name());
 
         assertThat(copies).hasSize(2);
     }

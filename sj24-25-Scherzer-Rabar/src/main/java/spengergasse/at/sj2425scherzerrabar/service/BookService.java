@@ -47,16 +47,16 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteBook(ApiKey bookApiKey) {
-        Book book = bookRepository.findBookByBookApiKey(bookApiKey.apiKey())
+    public void deleteBook(String bookApiKey) {
+        Book book = bookRepository.findBookByBookApiKey(bookApiKey)
                 .orElseThrow(NoSuchElementException::new);
         bookRepository.delete(book);
     }
 
 
     @Transactional
-    public void updateBook(BookCommand command) {
-        bookRepository.findBookByBookApiKey(command.apiKey()).map((Book b)->{
+    public BookDto updateBook(BookCommand command) {
+       Book book = bookRepository.findBookByBookApiKey(command.apiKey()).map((Book b)->{
             List<Author> authors = command.authorIds().stream()
                     .map(authorRepository::findAuthorByAuthorApiKey)
                     .flatMap(Optional::stream)
@@ -82,12 +82,13 @@ public class BookService {
             bookRepository.save(b);
             return b;
         }).orElseThrow(NoSuchElementException::new);
+       return BookDto.bookDtoFromBook(book);
     }
 
-    public List<BookDto> getBooks(Optional<ApiKey> authorApiKey) {
+    public List<BookDto> getBooks(String authorApiKey) {
         List<Book> books;
-        if (authorApiKey.isPresent()) {
-            Optional<Author> author = authorRepository.findAuthorByAuthorApiKey(String.valueOf(authorApiKey));
+        if (authorApiKey != null) {
+            Optional<Author> author = authorRepository.findAuthorByAuthorApiKey(authorApiKey);
             if(author.isPresent()) {
                 books = bookRepository.findByAuthorsContains(author.get());
             }else {
@@ -99,8 +100,8 @@ public class BookService {
         return books.stream().map(BookDto::bookDtoFromBook).toList();
     }
 
-    public BookDto getBook(ApiKey bookApiKey) {
-        Optional<Book> returnValue = bookRepository.findBookByBookApiKey(bookApiKey.apiKey());
+    public BookDto getBook(String bookApiKey) {
+        Optional<Book> returnValue = bookRepository.findBookByBookApiKey(bookApiKey);
         if(returnValue.isPresent()) {
             return BookDto.bookDtoFromBook(returnValue.get());
         }

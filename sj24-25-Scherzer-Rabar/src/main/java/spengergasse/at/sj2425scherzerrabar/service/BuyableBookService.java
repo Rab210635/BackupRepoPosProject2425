@@ -88,5 +88,26 @@ public class BuyableBookService {
         return BuyableBookDto.buyableBookDtoFromBuyableBook(buyableBook);
     }
 
-    //TODO get List with price, book, booktype, publisher
+    public List<BuyableBookDto> getAllBuyableBooksByPublisher(String publisherApiKey) {
+        var publisher = publisherRepository.findPublisherByPublisherApiKey(publisherApiKey)
+                .orElseThrow(() -> new NoSuchElementException("Publisher not found"));
+        List<BuyableBook> buyableBooks = buyableBookRepository.findAllByPublisher_PublisherApiKey_ApiKey(publisherApiKey);
+        return buyableBooks.stream().map(BuyableBookDto::buyableBookDtoFromBuyableBook).collect(Collectors.toList());
+    }
+
+    public List<BuyableBookDto> getAllBuyableBooksByPrice(Float price) {
+        List<BuyableBook> buyableBooks = buyableBookRepository.findAllByPrice(price);
+        return buyableBooks.stream().map(BuyableBookDto::buyableBookDtoFromBuyableBook).collect(Collectors.toList());
+    }
+    public List<BuyableBookDto> getAllBuyableBooksByBook(String bookApiKey) {
+        var book = bookRepository.findBookByBookApiKey(bookApiKey)
+                .orElseThrow(() -> new NoSuchElementException("Book not found"));
+        List<BuyableBook> buyableBooks = buyableBookRepository.findAllByBook_BookApiKey_ApiKey((bookApiKey));
+        return buyableBooks.stream().map(BuyableBookDto::buyableBookDtoFromBuyableBook).collect(Collectors.toList());
+    }
+    public List<BuyableBookDto> getAllBuyableBooksByBookType(String bookType) {
+        List<BuyableBook> buyableBooks = buyableBookRepository.findAllByBookType(BookType.valueOf(bookType));
+        return buyableBooks.stream().map(BuyableBookDto::buyableBookDtoFromBuyableBook).collect(Collectors.toList());
+    }
+
 }

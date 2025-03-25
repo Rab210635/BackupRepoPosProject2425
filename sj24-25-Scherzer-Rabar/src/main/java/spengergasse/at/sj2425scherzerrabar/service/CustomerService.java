@@ -34,15 +34,15 @@ public class CustomerService {
     }
 
     @Transactional
-    public void deleteCustomer(ApiKey apiKey) {
-        var customer = customerRepository.findCustomerByCustomerApiKey(apiKey.apiKey())
+    public void deleteCustomer(String apiKey) {
+        var customer = customerRepository.findCustomerByCustomerApiKey(apiKey)
                 .orElseThrow(NoSuchElementException::new);
         customerRepository.delete(customer);
     }
 
     @Transactional
-    public void updateCustomer(CustomerCommand command) {
-        customerRepository.findCustomerByCustomerApiKey(command.apiKey()).map((Customer c)->{
+    public CustomerDto updateCustomer(CustomerCommand command) {
+       Customer customer = customerRepository.findCustomerByCustomerApiKey(command.apiKey()).map((Customer c)->{
             if (!command.firstName().equals(c.getFirstName())) {
                 c.setFirstName(command.firstName());
             }
@@ -57,6 +57,7 @@ public class CustomerService {
             customerRepository.save(c);
             return c;
         }).orElseThrow(NoSuchElementException::new);
+       return CustomerDto.customerDtoFromCustomer(customer);
     }
 
     public List<CustomerDto> getCustomers() {
@@ -64,8 +65,8 @@ public class CustomerService {
         return customers.stream().map(CustomerDto::customerDtoFromCustomer).collect(Collectors.toList());
     }
 
-    public CustomerDto getCustomer(ApiKey apiKey) {
-        return customerRepository.findCustomerByCustomerApiKey(apiKey.apiKey()).map(CustomerDto::customerDtoFromCustomer).orElseThrow(NoSuchElementException::new);
+    public CustomerDto getCustomer(String apiKey) {
+        return customerRepository.findCustomerByCustomerApiKey(apiKey).map(CustomerDto::customerDtoFromCustomer).orElseThrow(NoSuchElementException::new);
     }
 
     public CustomerDto getCustomerByEMail(String emailAddress) {

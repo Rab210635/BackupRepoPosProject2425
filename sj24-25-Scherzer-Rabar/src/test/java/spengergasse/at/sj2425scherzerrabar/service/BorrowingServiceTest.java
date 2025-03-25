@@ -1,6 +1,8 @@
 package spengergasse.at.sj2425scherzerrabar.service;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
@@ -25,6 +27,8 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @ExtendWith(MockitoExtension.class)
 class BorrowingServiceTest {
     private @Mock BorrowingRepository borrowingRepository;
@@ -137,7 +141,7 @@ class BorrowingServiceTest {
     void cant_delete_borrowing_with_missing_borrowing() {
         when(borrowingRepository.findBorrowingByBorrowingApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> borrowingService.deleteBorrowing(new ApiKey("invalidBorrowingApiKey")))
+        assertThatThrownBy(() -> borrowingService.deleteBorrowing(new ApiKey("invalidBorrowingApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Borrowing record not found");
     }
@@ -147,7 +151,7 @@ class BorrowingServiceTest {
         var borrowing = FixturesFactory.borrowing(FixturesFactory.customer(), List.of(FixturesFactory.copy()));
         when(borrowingRepository.findBorrowingByBorrowingApiKey(any())).thenReturn(Optional.of(borrowing));
 
-        borrowingService.deleteBorrowing(borrowing.getBorrowingApiKey());
+        borrowingService.deleteBorrowing(borrowing.getBorrowingApiKey().apiKey());
 
         verify(borrowingRepository, times(1)).delete(borrowing);
     }
@@ -174,7 +178,7 @@ class BorrowingServiceTest {
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.of(customer));
         when(borrowingRepository.findBorrowingsByCustomer(any())).thenReturn(List.of(borrowing));
 
-        var borrowings = borrowingService.getBorrowingsByCustomer(new ApiKey("customerApiKey"));
+        var borrowings = borrowingService.getBorrowingsByCustomer(new ApiKey("customerApiKey").apiKey());
 
         assertThat(borrowings).hasSize(1);
         assertThat(borrowings.get(0).customerApiKey()).isEqualTo(customer.getCustomerApiKey().apiKey());
@@ -184,7 +188,7 @@ class BorrowingServiceTest {
     void cant_get_borrowings_by_non_existing_customer() {
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> borrowingService.getBorrowingsByCustomer(new ApiKey("invalidApiKey")))
+        assertThatThrownBy(() -> borrowingService.getBorrowingsByCustomer(new ApiKey("invalidApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -196,7 +200,7 @@ class BorrowingServiceTest {
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.of(copy));
         when(borrowingRepository.findBorrowingsByCopiesContaining(any())).thenReturn(List.of(borrowing));
 
-        var borrowings = borrowingService.getBorrowingsByCopy(new ApiKey("copyApiKey"));
+        var borrowings = borrowingService.getBorrowingsByCopy(new ApiKey("copyApiKey").apiKey());
 
         assertThat(borrowings).hasSize(1);
         assertThat(borrowings.get(0).copyApiKeys()).contains(copy.getCopyApiKey().apiKey());
@@ -206,7 +210,7 @@ class BorrowingServiceTest {
     void cant_get_borrowings_by_non_existing_copy() {
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> borrowingService.getBorrowingsByCopy(new ApiKey("invalidCopyApiKey")))
+        assertThatThrownBy(() -> borrowingService.getBorrowingsByCopy(new ApiKey("invalidCopyApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class);
     }
 }

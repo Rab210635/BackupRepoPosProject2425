@@ -45,15 +45,15 @@ public class CopyService {
     }
 
     @Transactional
-    public void deleteCopy(ApiKey apiKey) {
-        Copy copy = copyRepository.findCopyByCopyApiKey(apiKey.apiKey())
+    public void deleteCopy(String apiKey) {
+        Copy copy = copyRepository.findCopyByCopyApiKey(apiKey)
                 .orElseThrow(NoSuchElementException::new);
         copyRepository.delete(copy);
     }
 
     @Transactional
-    public void updateCopy(CopyCommand command) {
-        var copy = copyRepository.findCopyByCopyApiKey(command.apiKey()).map((Copy c)->{
+    public CopyDto updateCopy(CopyCommand command) {
+       Copy copy = copyRepository.findCopyByCopyApiKey(command.apiKey()).map((Copy c)->{
             if(!c.getBookType().equals(command.bookType())) {
                 c.setBookType(command.bookType());
             }
@@ -71,6 +71,7 @@ public class CopyService {
             copyRepository.save(c);
             return c;
         }).orElseThrow(NoSuchElementException::new);
+       return CopyDto.copyDtoFromCopy(copy);
     }
 
     public CopyDto getCopy(ApiKey apiKey) {
@@ -85,9 +86,9 @@ public class CopyService {
         return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
     }
 
-    public List<CopyDto> getCopiesByBook(ApiKey bookApiKey) {
+    public List<CopyDto> getCopiesByBook(String bookApiKey) {
 
-        var book = bookRepository.findBookByBookApiKey(bookApiKey.apiKey());
+        var book = bookRepository.findBookByBookApiKey(bookApiKey);
         if(book.isEmpty()) {
             throw new NoSuchElementException("Book not found");
         }
@@ -96,9 +97,9 @@ public class CopyService {
         return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
     }
 
-    public List<CopyDto> getCopiesByPublisher(ApiKey publisherApiKey) {
+    public List<CopyDto> getCopiesByPublisher(String publisherApiKey) {
 
-        var publisher = publisherRepository.findPublisherByPublisherApiKey(publisherApiKey.apiKey());
+        var publisher = publisherRepository.findPublisherByPublisherApiKey(publisherApiKey);
         if(publisher.isEmpty()) {
             throw new NoSuchElementException("Publisher not found");
         }
@@ -107,8 +108,8 @@ public class CopyService {
         return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
     }
 
-    public List<CopyDto> getCopiesByBookType(BookType bookType) {
-        List<Copy> copies = copyRepository.getCopiesByBookType(bookType);
+    public List<CopyDto> getCopiesByBookType(String bookType) {
+        List<Copy> copies = copyRepository.getCopiesByBookType(BookType.valueOf(bookType));
 
         return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
     }

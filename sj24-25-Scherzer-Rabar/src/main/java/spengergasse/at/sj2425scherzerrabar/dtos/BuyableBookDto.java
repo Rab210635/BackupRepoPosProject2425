@@ -10,7 +10,7 @@ public record BuyableBookDto(
         return new BuyableBookDto(
           buyableBook.getBuyableBookApiKey().apiKey(),buyableBook.getPrice(),
                 buyableBook.getPublisher().getPublisherApiKey().apiKey(), buyableBook.getBookType().name(),
-                buyableBook.getPageCount(),buyableBook.getBuyableBookApiKey().apiKey()
+                buyableBook.getPageCount(),buyableBook.getBook().getBookApiKey().apiKey()
         );
     }
 }

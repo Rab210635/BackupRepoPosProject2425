@@ -34,15 +34,15 @@ public class AuthorService {
     }
 
     @Transactional
-    public void deleteAuthor(ApiKey apiKey) {
-       Author author = authorRepository.findAuthorByAuthorApiKey(apiKey.apiKey())
+    public void deleteAuthor(String apiKey) {
+       Author author = authorRepository.findAuthorByAuthorApiKey(apiKey)
                .orElseThrow(NoSuchElementException::new);
        authorRepository.delete(author);
     }
 
     @Transactional
-    public void updateAuthor(AuthorCommand command) {
-        authorRepository.findAuthorByAuthorApiKey(command.apiKey()).map((Author a)->{
+    public AuthorDto updateAuthor(AuthorCommand command) {
+        Author author = authorRepository.findAuthorByAuthorApiKey(command.apiKey()).map((Author a)->{
             if(!a.getPenname().equals(command.penname()))
                 a.setPenname(command.penname());
             if(!a.getFirstName().equals(command.firstname()))
@@ -57,11 +57,12 @@ public class AuthorService {
             authorRepository.save(a);
             return a;
         }).orElseThrow(NoSuchElementException::new);
+        return AuthorDto.authorDtoFromAuthor(author);
     }
 
 
-    public AuthorDto getAuthor(ApiKey apiKey) {
-        return authorRepository.findAuthorByAuthorApiKey(apiKey.apiKey()).map(AuthorDto::authorDtoFromAuthor).orElseThrow(NoSuchElementException::new);
+    public AuthorDto getAuthor(String apiKey) {
+        return authorRepository.findAuthorByAuthorApiKey(apiKey).map(AuthorDto::authorDtoFromAuthor).orElseThrow(NoSuchElementException::new);
     }
 
     public List<AuthorDto> getAuthors() {

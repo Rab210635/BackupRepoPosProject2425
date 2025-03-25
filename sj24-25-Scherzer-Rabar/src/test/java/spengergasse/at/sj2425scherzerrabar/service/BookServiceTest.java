@@ -62,7 +62,7 @@ class BookServiceTest {
     void cant_delete_non_existing_book() {
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> bookService.deleteBook(new ApiKey("invalidApiKey")))
+        assertThatThrownBy(() -> bookService.deleteBook(new ApiKey("invalidApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -72,7 +72,7 @@ class BookServiceTest {
         var book = FixturesFactory.book(FixturesFactory.author());
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(book));
 
-        bookService.deleteBook(new ApiKey("validApiKey"));
+        bookService.deleteBook(new ApiKey("validApiKey").apiKey());
 
         verify(bookRepository, times(1)).delete(book);
     }
@@ -115,7 +115,7 @@ class BookServiceTest {
 
         when(bookRepository.findAll()).thenReturn(List.of(book1, book2));
 
-        var books = bookService.getBooks(Optional.empty());
+        var books = bookService.getBooks(null);
 
         assertThat(books).hasSize(2);
     }
@@ -128,7 +128,7 @@ class BookServiceTest {
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.of(author));
         when(bookRepository.findByAuthorsContains(any())).thenReturn(List.of(book1));
 
-        var books = bookService.getBooks(Optional.of(new ApiKey("authorApiKey")));
+        var books = bookService.getBooks(new ApiKey("authorApiKey").apiKey());
 
         assertThat(books).hasSize(1);
         assertThat(books.get(0).name()).isEqualTo("dasd");
@@ -138,7 +138,7 @@ class BookServiceTest {
     void cant_get_books_by_non_existing_author() {
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> bookService.getBooks(Optional.of(new ApiKey("invalidApiKey"))))
+        assertThatThrownBy(() -> bookService.getBooks(new ApiKey("invalidApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -149,7 +149,7 @@ class BookServiceTest {
 
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(book));
 
-        var bookDto = bookService.getBook(new ApiKey("bookApiKey"));
+        var bookDto = bookService.getBook(new ApiKey("bookApiKey").apiKey());
 
         assertThat(bookDto.name()).isEqualTo("dasd");
     }
@@ -158,7 +158,7 @@ class BookServiceTest {
     void cant_get_non_existing_book() {
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> bookService.getBook(new ApiKey("invalidApiKey")))
+        assertThatThrownBy(() -> bookService.getBook(new ApiKey("invalidApiKey").apiKey()))
                 .isInstanceOf(NoSuchElementException.class);
     }
 

@@ -59,7 +59,7 @@ class AuthorServiceTest {
         Author author = FixturesFactory.author();
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.of(author));
 
-        authorService.deleteAuthor(new ApiKey("validApiKey"));
+        authorService.deleteAuthor(new ApiKey("validApiKey").apiKey());
 
         verify(authorRepository, times(1)).delete(author);
     }
@@ -67,7 +67,7 @@ class AuthorServiceTest {
     @Test
     void cant_delete_not_existing_author(){
         ApiKey apiKey = new ApiKey("authorApiKey");
-        assertThatThrownBy(()->authorService.deleteAuthor(apiKey)).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(()->authorService.deleteAuthor(apiKey.apiKey())).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -98,14 +98,14 @@ class AuthorServiceTest {
     void can_get_existing_author_by_id(){
         Author author = FixturesFactory.author();
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.of(author));
-        var author1 = authorService.getAuthor(author.getAuthorApiKey());
+        var author1 = authorService.getAuthor(author.getAuthorApiKey().apiKey());
         assertThat(author1).isEqualTo(AuthorDto.authorDtoFromAuthor(author));
         verify(authorRepository, times(1)).findAuthorByAuthorApiKey(any());
     }
 
     @Test
     void cant_get_not_existing_author_by_id(){
-        assertThatThrownBy(()->authorService.getAuthor(new ApiKey("authorApiKey"))).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(()->authorService.getAuthor(new ApiKey("authorApiKey").apiKey())).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test

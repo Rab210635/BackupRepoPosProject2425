@@ -49,8 +49,8 @@ public class BorrowingService {
 
 
     @Transactional
-    public void deleteBorrowing(ApiKey borrowingApiKey) {
-        Borrowing borrowing = borrowingRepository.findBorrowingByBorrowingApiKey(borrowingApiKey.apiKey())
+    public void deleteBorrowing(String borrowingApiKey) {
+        Borrowing borrowing = borrowingRepository.findBorrowingByBorrowingApiKey(borrowingApiKey)
                 .orElseThrow(() -> new NoSuchElementException("Borrowing record not found"));
         borrowingRepository.delete(borrowing);
     }
@@ -85,22 +85,22 @@ public class BorrowingService {
         return borrowingRepository.findAll().stream().map(BorrowingDto::borrowingDtoFromBorrowing).collect(Collectors.toList());
     }
 
-    public List<BorrowingDto> getBorrowingsByCustomer(ApiKey customerApiKey) {
-        Customer customer = customerRepository.findCustomerByCustomerApiKey(customerApiKey.apiKey())
+    public List<BorrowingDto> getBorrowingsByCustomer(String customerApiKey) {
+        Customer customer = customerRepository.findCustomerByCustomerApiKey(customerApiKey)
                 .orElseThrow(() -> new NoSuchElementException("Customer not found"));
 
         return borrowingRepository.findBorrowingsByCustomer(customer).stream().map(BorrowingDto::borrowingDtoFromBorrowing).collect(Collectors.toList());
     }
 
-    public List<BorrowingDto> getBorrowingsByCopy(ApiKey copyApiKey) {
-        Copy copy = copyRepository.findCopyByCopyApiKey(copyApiKey.apiKey())
+    public List<BorrowingDto> getBorrowingsByCopy(String copyApiKey) {
+        Copy copy = copyRepository.findCopyByCopyApiKey(copyApiKey)
                 .orElseThrow(() -> new NoSuchElementException("Copy not found"));
 
         return borrowingRepository.findBorrowingsByCopiesContaining(copy).stream().map(BorrowingDto::borrowingDtoFromBorrowing).collect(Collectors.toList());
     }
 
-    public BorrowingDto getBorrowingByApiKey(ApiKey borrowingApiKey) {
-        Borrowing borrowing = borrowingRepository.findBorrowingByBorrowingApiKey(borrowingApiKey.apiKey()).orElseThrow(() -> new NoSuchElementException("Borrowing record not found"));
+    public BorrowingDto getBorrowingByApiKey(String borrowingApiKey) {
+        Borrowing borrowing = borrowingRepository.findBorrowingByBorrowingApiKey(borrowingApiKey).orElseThrow(() -> new NoSuchElementException("Borrowing record not found"));
         return BorrowingDto.borrowingDtoFromBorrowing(borrowing);
     }
 
