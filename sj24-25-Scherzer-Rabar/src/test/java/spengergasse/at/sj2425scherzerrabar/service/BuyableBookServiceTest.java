@@ -179,10 +179,9 @@ class BuyableBookServiceTest {
     }
 
     @Test
-    void can_get_buyable_book() {
+    void can_get_buyable_books() {
         BuyableBook buyableBook = FixturesFactory.buyableBook();
-        BuyableBook buyableBook1 = FixturesFactory.buyableBook();
-        when(buyableBookRepository.findAll()).thenReturn(List.of(buyableBook,buyableBook1));
+        when(buyableBookRepository.findAll()).thenReturn(List.of(buyableBook,buyableBook));
 
         var buyableBooks = buyableBookService.getAllBuyableBooks();
         assertThat(buyableBooks).hasSize(2);

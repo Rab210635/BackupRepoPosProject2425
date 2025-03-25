@@ -50,7 +50,7 @@ public class OrderService {
        var buyablebooks = command.booksApiKeys().stream().map(bb-> {
            var buyableBook = buyableBookRepository.findBuyableBookByBuyableBookApiKey(bb);
            if (buyableBook.isEmpty()) {
-               throw new NoSuchElementException("Book not found");
+               throw new NoSuchElementException("Buyable Book not found");
            }
            return buyableBook;
        }).flatMap(Optional::stream).toList();
@@ -80,7 +80,7 @@ public class OrderService {
         var buyablebooks = command.booksApiKeys().stream().map(bb-> {
             var buyableBook = buyableBookRepository.findBuyableBookByBuyableBookApiKey(bb);
             if (buyableBook.isEmpty()) {
-                throw new NoSuchElementException("Book not found");
+                throw new NoSuchElementException("Buyable Book not found");
             }
             return buyableBook;
         }).flatMap(Optional::stream).toList();
@@ -114,6 +114,8 @@ public class OrderService {
     }
 
     public List<OrderDto> getAllOrdersByCustomer(String customerApiKey) {
+        Customer customer = customerRepository.findCustomerByCustomerApiKey(customerApiKey)
+                .orElseThrow(() -> new NoSuchElementException("Customer not found"));
         return orderRepository.findAllByCustomer_CustomerApiKey_ApiKey(customerApiKey).stream()
                 .map(OrderDto::orderDtoFromOrder)
                 .collect(Collectors.toList());
