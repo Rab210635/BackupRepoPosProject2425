@@ -1,23 +1,15 @@
 package spengergasse.at.sj2425scherzerrabar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import spengergasse.at.sj2425scherzerrabar.commands.AuthorCommand;
-import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
-import spengergasse.at.sj2425scherzerrabar.domain.Author;
-import spengergasse.at.sj2425scherzerrabar.domain.Book;
+import spengergasse.at.sj2425scherzerrabar.domain.*;
 import spengergasse.at.sj2425scherzerrabar.dtos.AuthorDto;
-import spengergasse.at.sj2425scherzerrabar.dtos.BookDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.AuthorRepository;
-import spengergasse.at.sj2425scherzerrabar.persistence.BookRepository;
-import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookGenreConverter;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly=true)
@@ -33,7 +25,9 @@ public class AuthorService {
     public AuthorDto createAuthor(AuthorCommand command) {
 
         Author author = new Author(
-                command.firstname(), command.lastname(), command.address(),command.emailAddress(),command.penname()
+                command.firstname(), command.lastname(),
+                command.address().stream().map(Address::addressFromString).toList(),
+                new EmailAddress(command.emailAddress()),command.penname()
         );
          authorRepository.save(author);
         return AuthorDto.authorDtoFromAuthor(author);
@@ -48,17 +42,17 @@ public class AuthorService {
 
     @Transactional
     public void updateAuthor(AuthorCommand command) {
-        authorRepository.findAuthorByAuthorApiKey(command.apiKey().apiKey()).map((Author a)->{
+        authorRepository.findAuthorByAuthorApiKey(command.apiKey()).map((Author a)->{
             if(!a.getPenname().equals(command.penname()))
                 a.setPenname(command.penname());
             if(!a.getFirstName().equals(command.firstname()))
                 a.setFirstName(command.firstname());
             if(!a.getLastName().equals(command.lastname()))
                 a.setLastName(command.lastname());
-            if(!a.getEmailAddress().email().equals(command.emailAddress().email()))
-                a.setEmailAddress(command.emailAddress());
-            if(!a.getAddress().equals(command.address()))
-                a.setAddress(command.address());
+            if(!a.getEmailAddress().email().equals(command.emailAddress())) {
+                a.setEmailAddress(new EmailAddress(command.emailAddress()));
+            }
+            a.setAddress(command.address().stream().map(Address::addressFromString).toList());
 
             authorRepository.save(a);
             return a;

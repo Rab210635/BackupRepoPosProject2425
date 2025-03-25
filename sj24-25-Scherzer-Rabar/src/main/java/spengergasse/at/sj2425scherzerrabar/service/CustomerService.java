@@ -3,6 +3,7 @@ package spengergasse.at.sj2425scherzerrabar.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spengergasse.at.sj2425scherzerrabar.commands.CustomerCommand;
+import spengergasse.at.sj2425scherzerrabar.domain.Address;
 import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
 import spengergasse.at.sj2425scherzerrabar.domain.Customer;
 import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
@@ -25,7 +26,8 @@ public class CustomerService {
     @Transactional
     public CustomerDto createCustomer(CustomerCommand command) {
         Customer customer = new Customer(
-         command.firstName(),command.lastName(),command.emailAddress(),command.addresses()
+         command.firstName(),command.lastName(),new EmailAddress(command.emailAddress()),
+                command.addresses().stream().map(Address::addressFromString).toList()
         );
         customerRepository.save(customer);
         return CustomerDto.customerDtoFromCustomer(customer);
@@ -40,19 +42,18 @@ public class CustomerService {
 
     @Transactional
     public void updateCustomer(CustomerCommand command) {
-        customerRepository.findCustomerByCustomerApiKey(command.apiKey().apiKey()).map((Customer c)->{
+        customerRepository.findCustomerByCustomerApiKey(command.apiKey()).map((Customer c)->{
             if (!command.firstName().equals(c.getFirstName())) {
                 c.setFirstName(command.firstName());
             }
             if (!command.lastName().equals(c.getLastName())) {
                 c.setLastName(command.lastName());
             }
-            if (!command.emailAddress().equals(c.getEmailAddress())) {
-                c.setEmailAddress(command.emailAddress());
+            if (!command.emailAddress().equals(c.getEmailAddress().email())) {
+                c.setEmailAddress(new EmailAddress(command.emailAddress()));
             }
-            if (!command.addresses().equals(c.getAddress())) {
-                c.setAddress(command.addresses());
-            }
+            c.setAddress(command.addresses().stream().map(Address::addressFromString).toList());
+
             customerRepository.save(c);
             return c;
         }).orElseThrow(NoSuchElementException::new);

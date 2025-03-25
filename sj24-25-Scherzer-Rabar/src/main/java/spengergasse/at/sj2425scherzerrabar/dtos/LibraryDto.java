@@ -8,7 +8,7 @@ public record LibraryDto(
         String apiKey,
         String name,
         String headquarters,
-        List<BookInLibrariesDto> booksInLibraries
+        List<BookInLibrariesDto> booksInLibraries //TODO
 ) {
     public static LibraryDto libraryDtoFromLibrary(Library library) {
         return new LibraryDto(

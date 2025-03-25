@@ -1,12 +1,11 @@
 package spengergasse.at.sj2425scherzerrabar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spengergasse.at.sj2425scherzerrabar.commands.BranchCommand;
+import spengergasse.at.sj2425scherzerrabar.domain.Address;
 import spengergasse.at.sj2425scherzerrabar.domain.Branch;
 import spengergasse.at.sj2425scherzerrabar.dtos.BranchDto;
-import spengergasse.at.sj2425scherzerrabar.persistence.AuthorRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.BranchRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.LibraryRepository;
 
@@ -28,26 +27,27 @@ public class BranchService {
 
     @Transactional
     public BranchDto createBranch(BranchCommand branchDto) {
-        var library = libraryRepository.findLibraryByLibraryApiKey(branchDto.libraryApiKey().apiKey());
-        if(!library.isPresent()) {
+        var library = libraryRepository.findLibraryByLibraryApiKey(branchDto.libraryApiKey());
+        if(library.isEmpty()) {
             throw new NoSuchElementException("Library not found");
         }
-        return toDto( branchRepository.save(new Branch(library.get(),branchDto.address())));
+        return BranchDto.branchDtoFromBranch(
+                branchRepository.save(new Branch(library.get(), Address.addressFromString(branchDto.address()))));
     }
 
     @Transactional
     public BranchDto updateBranch(BranchCommand command) {
-        Branch branch = branchRepository.findBranchByBranchApiKey(command.apiKey().apiKey())
+        Branch branch = branchRepository.findBranchByBranchApiKey(command.apiKey())
                 .orElseThrow(() -> new NoSuchElementException("Branch not found"));
 
-        var library = libraryRepository.findLibraryByLibraryApiKey(command.libraryApiKey().apiKey())
+        var library = libraryRepository.findLibraryByLibraryApiKey(command.libraryApiKey())
                 .orElseThrow(() -> new NoSuchElementException("Library not found"));
 
         branch.setLibrary(library);
-        branch.setAddress(command.address());
+        branch.setAddress(Address.addressFromString(command.address()));
 
         branch = branchRepository.save(branch);
-        return toDto(branch);
+        return BranchDto.branchDtoFromBranch(branch);
     }
 
     @Transactional
@@ -61,12 +61,12 @@ public class BranchService {
 
 
     public List<BranchDto> getAllBranches() {
-        return branchRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+        return branchRepository.findAll().stream().map(BranchDto::branchDtoFromBranch).collect(Collectors.toList());
     }
 
     public BranchDto getBranchByApiKey(String branchApiKey) {
         return branchRepository.findBranchByBranchApiKey(branchApiKey)
-                .map(this::toDto)
+                .map(BranchDto::branchDtoFromBranch)
                 .orElseThrow(() -> new NoSuchElementException("Branch not found"));
     }
 
@@ -74,15 +74,7 @@ public class BranchService {
         var library = libraryRepository.findLibraryByLibraryApiKey(libraryApiKey)
                 .orElseThrow(() -> new NoSuchElementException("Library not found"));
 
-        return branchRepository.findBranchesByLibrary(library).stream().map(this::toDto).collect(Collectors.toList());
+        return branchRepository.findBranchesByLibrary(library).stream().map(BranchDto::branchDtoFromBranch).collect(Collectors.toList());
     }
 
-
-    public BranchDto toDto(Branch branch) {
-        return new BranchDto(
-                branch.getBranchApiKey(),
-                branch.getLibrary().getLibraryApiKey(),
-                branch.getAddress()
-        );
-    }
 }

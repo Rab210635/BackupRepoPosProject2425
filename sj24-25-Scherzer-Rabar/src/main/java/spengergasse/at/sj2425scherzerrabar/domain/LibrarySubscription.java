@@ -37,6 +37,46 @@ public class LibrarySubscription {
         this.library = library;
     }
 
+    public ApiKey getLibrarySubscriptionApiKey() {
+        return librarySubscriptionApiKey;
+    }
+
+    public void setLibrarySubscriptionApiKey(ApiKey librarySubscriptionApiKey) {
+        this.librarySubscriptionApiKey = librarySubscriptionApiKey;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getMonthlyCost() {
+        return monthlyCost;
+    }
+
+    public void setMonthlyCost(Double monthlyCost) {
+        this.monthlyCost = monthlyCost;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
     @Embeddable
     record LibrarySubscriptionId (@GeneratedValue @NotNull Long id){}
 }
