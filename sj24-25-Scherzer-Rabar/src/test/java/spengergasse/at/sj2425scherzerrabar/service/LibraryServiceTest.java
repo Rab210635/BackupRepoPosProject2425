@@ -9,13 +9,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.commands.BookInLibrariesCommand;
 import spengergasse.at.sj2425scherzerrabar.commands.LibraryCommand;
-import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
-import spengergasse.at.sj2425scherzerrabar.domain.BookInLibraries;
-import spengergasse.at.sj2425scherzerrabar.domain.Library;
+import spengergasse.at.sj2425scherzerrabar.domain.*;
 import spengergasse.at.sj2425scherzerrabar.dtos.BookInLibrariesDto;
 import spengergasse.at.sj2425scherzerrabar.dtos.LibraryDto;
+import spengergasse.at.sj2425scherzerrabar.persistence.BookRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.LibraryRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -28,23 +28,25 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class LibraryServiceTest {
     private @Mock LibraryRepository libraryRepository;
+    private @Mock BookRepository bookRepository;
+
 
     private LibraryService libraryService;
 
     @BeforeEach
     void setUp() {
-        libraryService = new LibraryService(libraryRepository);
+        libraryService = new LibraryService(libraryRepository,bookRepository);
     }
-
 
 
     @Test
     void can_create_library() {
-        BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
+        Book b1 = FixturesFactory.book(FixturesFactory.author());
+        BookInLibraries bookInLibraries = FixturesFactory.libBook(b1);
         var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "Thalia", FixturesFactory.libraryAddress().toString(),
                 List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
         when(libraryRepository.save(any(Library.class))).then(AdditionalAnswers.returnsFirstArg());
-
+        when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(b1));
         LibraryDto createdLibrary = libraryService.createLibrary(command);
 
         assertThat(createdLibrary).isNotNull();
@@ -57,7 +59,7 @@ class LibraryServiceTest {
     void cant_delete_library_with_missing_library() {
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> libraryService.deleteLibrary(new ApiKey("invalidLibraryApiKey")))
+        assertThatThrownBy(() -> libraryService.deleteLibrary("invalidLibraryApiKey"))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Library not found");
     }
@@ -67,7 +69,7 @@ class LibraryServiceTest {
         Library library = FixturesFactory.thalia(FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
 
-        libraryService.deleteLibrary(library.getLibraryApiKey());
+        libraryService.deleteLibrary(library.getLibraryApiKey().apiKey());
 
         verify(libraryRepository, times(1)).delete(library);
     }
@@ -77,24 +79,28 @@ class LibraryServiceTest {
         BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.empty());
 
-        var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "Thalia", FixturesFactory.libraryAddress().toString(),
+        var command = new LibraryCommand("LibraryKey", "Thalia", FixturesFactory.libraryAddress().toString(),
                 List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
 
-        assertThatThrownBy(() -> libraryService.updateLibrary(new ApiKey("invalidLibraryApiKey"), command))
+        assertThatThrownBy(() -> libraryService.updateLibrary( command))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Library not found");
     }
 
     @Test
     void can_update_library() {
-        BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
+        Book b1 = FixturesFactory.book(FixturesFactory.author());
+
+        BookInLibraries bookInLibraries = FixturesFactory.libBook(b1);
         Library library = FixturesFactory.thalia(FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
-        var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "UpdatedLibrary", FixturesFactory.libraryAddress().toString(),
+
+        var command = new LibraryCommand("LibraryKey", "UpdatedLibrary", FixturesFactory.libraryAddress().toString(),
                 List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
+        when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.of(b1));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
         when(libraryRepository.save(any(Library.class))).then(AdditionalAnswers.returnsFirstArg());
 
-        LibraryDto updatedLibrary = libraryService.updateLibrary(library.getLibraryApiKey(), command);
+        LibraryDto updatedLibrary = libraryService.updateLibrary(command);
 
         assertThat(updatedLibrary).isNotNull();
         assertThat(updatedLibrary.name()).isEqualTo("UpdatedLibrary");
@@ -115,7 +121,7 @@ class LibraryServiceTest {
     void cant_get_library_with_missing_library() {
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> libraryService.getLibrary(new ApiKey("invalidLibraryApiKey")))
+        assertThatThrownBy(() -> libraryService.getLibrary("invalidLibraryApiKey"))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Library not found");
     }
@@ -125,7 +131,7 @@ class LibraryServiceTest {
         Library library = FixturesFactory.thalia(FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
 
-        LibraryDto libraryDto = libraryService.getLibrary(library.getLibraryApiKey());
+        LibraryDto libraryDto = libraryService.getLibrary(library.getLibraryApiKey().apiKey());
 
         assertThat(libraryDto).isNotNull();
         assertThat(libraryDto.name()).isEqualTo(library.getName());

@@ -10,6 +10,7 @@ public class FixturesFactory {
     public static Address libraryAddress() {
         return new Address("spengergasse 20","Vienna",1050);
     }
+
     public static Address address2() {
         return new Address("Reumanplatz 66","Vienna",1100);
     }
@@ -55,8 +56,6 @@ public class FixturesFactory {
                 100.0,library);
     }
 
-
-
     public static Review review(){
         return new Review("dasds",5,"dasdsa",customer(),book(author()),filiale(),publisher(address2()));
 
@@ -79,7 +78,7 @@ public class FixturesFactory {
     }
 
     public static Copy copy(){
-        return new Copy(publisher(address2()),BookType.PAPERBACK,244,book(author()));
+        return new Copy(publisher(address2()),BookType.PAPERBACK,244,book(author()),filiale());
     }
 
     public static Borrowing borrowing(Customer customer, List<Copy> copies){

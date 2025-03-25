@@ -78,7 +78,7 @@ class PublisherServiceTest {
     void cant_update_non_existing_publisher() {
         // Arrange
         Address address = FixturesFactory.address2();
-        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey").apiKey(), "Updated Publisher", address.toString());
+        PublisherCommand command = new PublisherCommand("apiKey", "Updated Publisher", address.toString());
         when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.empty());
 
         // Act & Assert

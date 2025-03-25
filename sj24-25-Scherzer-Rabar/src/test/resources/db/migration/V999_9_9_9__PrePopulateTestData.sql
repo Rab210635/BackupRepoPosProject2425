@@ -3,4 +3,3 @@ values (nextval('author_seq'),'Thomas', 'Tschernko','BitteNurSachenBewertenDieWI
 
 insert into addresses_in_authors(author_id, zip, city, street_and_number)
 values (currval('author_seq'),'1010','Vienna','Tschernko Sie sind der !beste! ')
-

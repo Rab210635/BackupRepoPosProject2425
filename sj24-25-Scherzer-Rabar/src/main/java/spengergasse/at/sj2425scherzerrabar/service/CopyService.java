@@ -8,6 +8,7 @@ import spengergasse.at.sj2425scherzerrabar.domain.BookType;
 import spengergasse.at.sj2425scherzerrabar.domain.Copy;
 import spengergasse.at.sj2425scherzerrabar.dtos.CopyDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.BookRepository;
+import spengergasse.at.sj2425scherzerrabar.persistence.BranchRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.CopyRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.PublisherRepository;
 
@@ -22,11 +23,13 @@ public class CopyService {
     private final CopyRepository copyRepository;
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
+    private final BranchRepository branchRepository;
 
-    public CopyService(CopyRepository copyRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
+    public CopyService(CopyRepository copyRepository, BookRepository bookRepository, PublisherRepository publisherRepository, BranchRepository branchRepository) {
         this.copyRepository = copyRepository;
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;
+        this.branchRepository = branchRepository;
     }
 
     @Transactional
@@ -39,7 +42,11 @@ public class CopyService {
         if(publisher.isEmpty()) {
             throw new NoSuchElementException("Publisher not found");
         }
-        Copy copy = new Copy(publisher.get(), command.bookType(),command.pageCount(),book.get());
+        var branch = branchRepository.findBranchByBranchApiKey(command.branchApiKey());
+        if(branch.isEmpty()) {
+            throw new NoSuchElementException("Branch not found");
+        }
+        Copy copy = new Copy(publisher.get(), command.bookType(),command.pageCount(),book.get(),branch.get());
         copyRepository.save(copy);
         return CopyDto.copyDtoFromCopy(copy);
     }
@@ -68,6 +75,10 @@ public class CopyService {
                 publisherRepository.findPublisherByPublisherApiKey(command.publisherApiKey())
                         .ifPresentOrElse(c::setPublisher,()->{throw new NoSuchElementException("Publisher not found");} );
             }
+            if(!c.getInBranch().getBranchApiKey().apiKey().equals(command.branchApiKey())) {
+                branchRepository.findBranchByBranchApiKey(command.branchApiKey())
+                        .ifPresentOrElse(c::setInBranch,()->{throw new NoSuchElementException("Branch not found");} );
+            }
             copyRepository.save(c);
             return c;
         }).orElseThrow(NoSuchElementException::new);
@@ -75,15 +86,12 @@ public class CopyService {
     }
 
     public CopyDto getCopy(ApiKey apiKey) {
-        return copyRepository.findCopyByCopyApiKey(apiKey.apiKey())
-                .map(CopyDto::copyDtoFromCopy)
+        return copyRepository.getProjectedByCopyApiKey(apiKey.apiKey())
                 .orElseThrow(NoSuchElementException::new);
     }
 
     public List<CopyDto> getCopies() {
-        List<Copy> copies = copyRepository.findAll();
-
-        return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
+        return copyRepository.findAllProjected();
     }
 
     public List<CopyDto> getCopiesByBook(String bookApiKey) {
@@ -92,10 +100,8 @@ public class CopyService {
         if(book.isEmpty()) {
             throw new NoSuchElementException("Book not found");
         }
-        List<Copy> copies = copyRepository.getCopiesByBook_BookApiKey(book.get().getBookApiKey());
-
-        return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
-    }
+        return copyRepository.findAllProjectedByBook_BookApiKey(book.get().getBookApiKey().apiKey());
+}
 
     public List<CopyDto> getCopiesByPublisher(String publisherApiKey) {
 
@@ -103,14 +109,18 @@ public class CopyService {
         if(publisher.isEmpty()) {
             throw new NoSuchElementException("Publisher not found");
         }
-        List<Copy> copies = copyRepository.getCopiesByPublisher_PublisherApiKey(publisher.get().getPublisherApiKey());
+        return copyRepository.findAllProjectedByPublisher_PublisherApiKey(publisher.get().getPublisherApiKey().apiKey());
+    }
 
-        return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
+    public List<CopyDto> getCopiesByBranch(ApiKey branchApiKey) {
+        var branch = branchRepository.findBranchByBranchApiKey(branchApiKey.apiKey());
+        if(branch.isEmpty()) {
+            throw new NoSuchElementException("Branch not found");
+        }
+        return copyRepository.findAllProjectedByInBranch_BranchApiKey(branch.get().getBranchApiKey().apiKey());
     }
 
     public List<CopyDto> getCopiesByBookType(String bookType) {
-        List<Copy> copies = copyRepository.getCopiesByBookType(BookType.valueOf(bookType));
-
-        return copies.stream().map(CopyDto::copyDtoFromCopy).collect(Collectors.toList());
+        return copyRepository.findAllProjectedByBookType(BookType.valueOf(bookType));
     }
 }

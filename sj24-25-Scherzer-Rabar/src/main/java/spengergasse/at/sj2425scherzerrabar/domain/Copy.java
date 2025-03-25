@@ -16,14 +16,18 @@ public class Copy extends BookSpecification {
     private ApiKey copyApiKey;
 
 
-    public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book) {
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_copy_2_branch"))
+    private Branch inBranch;
+
+    public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book, Branch inBranch) {
         super(publisher,bookType,pageCount,book);
         this.copyApiKey = new ApiKeyFactory().generate(30);
-        this.publisher = publisher;
-        this.bookType = bookType;
-        this.pageCount = pageCount;
-        this.book = book;
+        this.inBranch = inBranch;
     }
+
+
 
     public Copy() {
         this.copyApiKey = new ApiKeyFactory().generate(30);
@@ -67,6 +71,14 @@ public class Copy extends BookSpecification {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public Branch getInBranch() {
+        return inBranch;
+    }
+
+    public void setInBranch(Branch inBranch) {
+        this.inBranch = inBranch;
     }
 
     @Embeddable

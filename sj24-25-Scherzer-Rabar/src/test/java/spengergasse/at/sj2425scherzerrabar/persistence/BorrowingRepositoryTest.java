@@ -29,7 +29,8 @@ class BorrowingRepositoryTest {
         var book = FixturesFactory.book(author);
         var publisher = new Publisher();
         var customer = new Customer("Max","Mustermann", email,List.of(adresse));
-        var copy = new Copy(publisher,BookType.PAPERBACK,244,book);
+        var branch = FixturesFactory.filiale();
+        var copy = new Copy(publisher,BookType.PAPERBACK,244,book,branch);
         var borrowing = new Borrowing(customer,List.of(copy),LocalDate.of(2024,5,5),25);
         //act
         var saved = repository.save(borrowing);

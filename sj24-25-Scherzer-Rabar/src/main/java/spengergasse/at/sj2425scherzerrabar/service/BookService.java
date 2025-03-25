@@ -37,7 +37,6 @@ public class BookService {
         if (authors.isEmpty()) {
             throw new NoSuchElementException("Author not found");
         }
-        LocalDate released = command.releaseDate();
         Book book = new Book(
                 command.name(), command.releaseDate(), command.availableOnline(), command.wordCount(),
                 command.genre().stream().map(BookGenre::valueOf).toList()
