@@ -9,10 +9,8 @@ import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
-import spengergasse.at.sj2425scherzerrabar.commands.AuthorCommand;
 import spengergasse.at.sj2425scherzerrabar.commands.CustomerCommand;
 import spengergasse.at.sj2425scherzerrabar.domain.*;
-import spengergasse.at.sj2425scherzerrabar.dtos.AuthorDto;
 import spengergasse.at.sj2425scherzerrabar.dtos.CustomerDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.CustomerRepository;
 
@@ -23,7 +21,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
@@ -45,8 +42,8 @@ class CustomerServiceTest {
         when(customerRepository.save(any(Customer.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var customer = customerService.createCustomer( new CustomerCommand(
-                new ApiKey("customerApiKey"),List.of(new Address("12","Wien",1212)),
-                "Paron", "krabar",new EmailAddress("hoho@sasd.at")));
+                new ApiKey("customerApiKey").apiKey(),List.of(new Address("12","Wien",1212).toString()),
+                "Paron", "krabar",new EmailAddress("hoho@sasd.at").email()));
         assertThat(customer).isNotNull();
     }
 
@@ -73,8 +70,8 @@ class CustomerServiceTest {
         when(customerRepository.save(any(Customer.class))).then(AdditionalAnswers.returnsFirstArg());
 
         customerService.updateCustomer(new CustomerCommand(
-                new ApiKey("customerApiKey"),List.of(new Address("12","Wien",1212)),
-                "Mustermann", "Max",new EmailAddress("hoho@sasd.at")));
+                new ApiKey("customerApiKey").apiKey(),List.of(new Address("12","Wien",1212).toString()),
+                "Mustermann", "Max",new EmailAddress("hoho@sasd.at").email()));
 
         verify(customerRepository, times(1)).save(customer);
         assertThat(customer.getLastName()).isEqualTo("Max");
@@ -84,8 +81,8 @@ class CustomerServiceTest {
     @Test
     void cant_update_not_existing_customer(){
         assertThatThrownBy(()->customerService.updateCustomer(new CustomerCommand(
-                new ApiKey("customerApiKey"),List.of(new Address("12","Wien",1212)),
-                "Mustermann", "Max",new EmailAddress("hoho@sasd.at"))))
+                new ApiKey("customerApiKey").apiKey(),List.of(new Address("12","Wien",1212).toString()),
+                "Mustermann", "Max",new EmailAddress("hoho@sasd.at").email())))
                 .isInstanceOf(NoSuchElementException.class);
     }
 

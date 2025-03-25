@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface BuyableBookRepository extends JpaRepository<BuyableBook, Long> {
     public Optional<BuyableBook> findBuyableBookByBuyableBookApiKey(String apiKey);
+
 }

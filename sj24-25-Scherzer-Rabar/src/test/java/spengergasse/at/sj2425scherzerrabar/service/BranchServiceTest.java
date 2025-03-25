@@ -45,18 +45,20 @@ class BranchServiceTest {
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
         when(branchRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
-        var createdBranch = branchService.createBranch(new BranchCommand(new ApiKey("BranchApiKey"),library.getLibraryApiKey(),FixturesFactory.address2()));
+        var createdBranch = branchService.createBranch(new BranchCommand(new ApiKey("BranchApiKey").apiKey(),
+                library.getLibraryApiKey().apiKey(),FixturesFactory.address2().toString()));
 
         assertThat(createdBranch).isNotNull();
-        assertThat(createdBranch.libraryApiKey()).isEqualTo(library.getLibraryApiKey());
-        assertThat(createdBranch.address()).isEqualTo(branch.getAddress());
+        assertThat(createdBranch.libraryApiKey()).isEqualTo(library.getLibraryApiKey().apiKey());
+        assertThat(createdBranch.address()).isEqualTo(branch.getAddress().toString());
     }
 
     @Test
     void cant_create_branch_with_invalid_library() {
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> branchService.createBranch(new BranchCommand(new ApiKey("BranchApiKey"),new ApiKey("NonExistentApiKey"),FixturesFactory.address2())))
+        assertThatThrownBy(() -> branchService.createBranch(new BranchCommand(new ApiKey("BranchApiKey").apiKey(),
+                new ApiKey("NonExistentApiKey").apiKey(),FixturesFactory.address2().toString())))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Library not found");
     }
@@ -71,17 +73,18 @@ class BranchServiceTest {
         when(branchRepository.save(any())).thenReturn(branch);
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
 
-        var updatedBranch = branchService.updateBranch(new BranchCommand(new ApiKey("validBranchApiKey"),new ApiKey("validnewLibrary"),newAddress));
+        var updatedBranch = branchService.updateBranch(new BranchCommand(new ApiKey("validBranchApiKey").apiKey(),new ApiKey("validnewLibrary").apiKey(),newAddress.toString()));
 
         assertThat(updatedBranch).isNotNull();
-        assertThat(updatedBranch.address()).isEqualTo(newAddress);
+        assertThat(updatedBranch.address()).isEqualTo(newAddress.toString());
     }
 
     @Test
     void cant_update_nonexistent_branch() {
         when(branchRepository.findBranchByBranchApiKey(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> branchService.updateBranch(new BranchCommand(new ApiKey("invalidKey"),new ApiKey("not relevant"), FixturesFactory.libraryAddress())))
+        assertThatThrownBy(() -> branchService.updateBranch(new BranchCommand(new ApiKey("invalidKey").apiKey(),
+                new ApiKey("not relevant").apiKey(), FixturesFactory.libraryAddress().toString())))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Branch not found");
     }
@@ -127,8 +130,8 @@ class BranchServiceTest {
         var foundBranch = branchService.getBranchByApiKey("validBranchApiKey");
 
         assertThat(foundBranch).isNotNull();
-        assertThat(foundBranch.libraryApiKey()).isEqualTo(branch.getLibrary().getLibraryApiKey());
-        assertThat(foundBranch.address()).isEqualTo(branch.getAddress());
+        assertThat(foundBranch.libraryApiKey()).isEqualTo(branch.getLibrary().getLibraryApiKey().apiKey());
+        assertThat(foundBranch.address()).isEqualTo(branch.getAddress().toString());
     }
 
     @Test
@@ -152,7 +155,7 @@ class BranchServiceTest {
         var branches = branchService.getBranchesByLibrary("validLibraryApiKey");
 
         assertThat(branches).hasSize(2);
-        assertThat(branches.get(0).libraryApiKey()).isEqualTo(library.getLibraryApiKey());
+        assertThat(branches.get(0).libraryApiKey()).isEqualTo(library.getLibraryApiKey().apiKey());
     }
 
     @Test

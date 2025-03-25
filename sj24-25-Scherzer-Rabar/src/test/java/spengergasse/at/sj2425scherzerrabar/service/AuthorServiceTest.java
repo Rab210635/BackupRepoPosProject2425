@@ -40,8 +40,8 @@ class AuthorServiceTest {
     @Test
     void cant_create_author_with_wrong_address() {
        assertThatThrownBy(()-> authorService.createAuthor( new AuthorCommand(
-               new ApiKey("authorApiKey"),"Aaron",List.of(new Address("12","Wien",12)),
-               "Paron", "krabar",new EmailAddress("hoho@s.s")))).isInstanceOf(Address.AddressException.class);
+               new ApiKey("authorApiKey").apiKey(),"Aaron",List.of(new Address("12","Wien",12).toString()),
+               "Paron", "krabar",new EmailAddress("hoho@s.s").email()))).isInstanceOf(Address.AddressException.class);
     }
 
     @Test
@@ -49,8 +49,8 @@ class AuthorServiceTest {
         when(authorRepository.save(any(Author.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var author = authorService.createAuthor( new AuthorCommand(
-                new ApiKey("authorApiKey"),"Aaron",List.of(new Address("12","Wien",1212)),
-                "Paron", "krabar",new EmailAddress("hoho@sasd.at")));
+                new ApiKey("authorApiKey").apiKey(),"Aaron",List.of(new Address("12","Wien",1212).toString()),
+                "Paron", "krabar",new EmailAddress("hoho@sasd.at").email()));
         assertThat(author).isNotNull();
     }
 
@@ -77,8 +77,8 @@ class AuthorServiceTest {
         when(authorRepository.save(any(Author.class))).then(AdditionalAnswers.returnsFirstArg());
 
         authorService.updateAuthor(new AuthorCommand(
-                new ApiKey("authorApiKey"),"Update",List.of(new Address("12","Wien",1212)),
-                "Mustermann", "Max",new EmailAddress("hoho@sasd.at")));
+                new ApiKey("authorApiKey").apiKey(),"Update",List.of(new Address("12","Wien",1212).toString()),
+                "Mustermann", "Max",new EmailAddress("hoho@sasd.at").email()));
 
         verify(authorRepository, times(1)).save(author);
         assertThat(author.getPenname()).isEqualTo("Update");
@@ -89,8 +89,8 @@ class AuthorServiceTest {
     @Test
     void cant_update_not_existing_author(){
         assertThatThrownBy(()->authorService.updateAuthor(new AuthorCommand(
-                new ApiKey("authorApiKey"),"Update",List.of(new Address("12","Wien",1212)),
-                "Mustermann", "Max",new EmailAddress("hoho@sasd.at"))))
+                new ApiKey("authorApiKey").apiKey(),"Update",List.of(new Address("12","Wien",1212).toString()),
+                "Mustermann", "Max",new EmailAddress("hoho@sasd.at").email())))
                 .isInstanceOf(NoSuchElementException.class);
     }
 

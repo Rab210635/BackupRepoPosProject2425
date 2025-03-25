@@ -7,10 +7,12 @@ import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
+import spengergasse.at.sj2425scherzerrabar.commands.BookInLibrariesCommand;
 import spengergasse.at.sj2425scherzerrabar.commands.LibraryCommand;
 import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
 import spengergasse.at.sj2425scherzerrabar.domain.BookInLibraries;
 import spengergasse.at.sj2425scherzerrabar.domain.Library;
+import spengergasse.at.sj2425scherzerrabar.dtos.BookInLibrariesDto;
 import spengergasse.at.sj2425scherzerrabar.dtos.LibraryDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.LibraryRepository;
 
@@ -39,16 +41,16 @@ class LibraryServiceTest {
     @Test
     void can_create_library() {
         BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
-        var command = new LibraryCommand(new ApiKey("LibraryKey"), "Thalia", FixturesFactory.libraryAddress(),List.of(bookInLibraries));
+        var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "Thalia", FixturesFactory.libraryAddress().toString(),
+                List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
         when(libraryRepository.save(any(Library.class))).then(AdditionalAnswers.returnsFirstArg());
 
         LibraryDto createdLibrary = libraryService.createLibrary(command);
 
         assertThat(createdLibrary).isNotNull();
         assertThat(createdLibrary.name()).isEqualTo("Thalia");
-        assertThat(createdLibrary.headquarters()).isEqualTo(FixturesFactory.libraryAddress());
-        System.out.println("LOOK: "+createdLibrary.booksInLibraries().getFirst().getBook().getName());
-        assertThat(createdLibrary.booksInLibraries()).contains(bookInLibraries);
+        assertThat(createdLibrary.headquarters()).isEqualTo(FixturesFactory.libraryAddress().toString());
+        assertThat(createdLibrary.booksInLibraries()).contains(BookInLibrariesDto.bookInLibrariesDtoFromBookInLibraries(bookInLibraries)); //TODO Error
     }
 
     @Test
@@ -72,9 +74,11 @@ class LibraryServiceTest {
 
     @Test
     void cant_update_library_with_missing_library() {
+        BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.empty());
 
-        var command = new LibraryCommand(new ApiKey("LibraryKey"), "Thalia", FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
+        var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "Thalia", FixturesFactory.libraryAddress().toString(),
+                List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
 
         assertThatThrownBy(() -> libraryService.updateLibrary(new ApiKey("invalidLibraryApiKey"), command))
                 .isInstanceOf(NoSuchElementException.class)
@@ -83,8 +87,10 @@ class LibraryServiceTest {
 
     @Test
     void can_update_library() {
+        BookInLibraries bookInLibraries = FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()));
         Library library = FixturesFactory.thalia(FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
-        var command = new LibraryCommand(new ApiKey("LibraryKey"), "UpdatedLibrary", FixturesFactory.libraryAddress(),List.of(FixturesFactory.libBook(FixturesFactory.book(FixturesFactory.author()))));
+        var command = new LibraryCommand(new ApiKey("LibraryKey").apiKey(), "UpdatedLibrary", FixturesFactory.libraryAddress().toString(),
+                List.of(new BookInLibrariesCommand(bookInLibraries.getBook().getBookApiKey().apiKey(),bookInLibraries.getBorrowLengthDays())));
         when(libraryRepository.findLibraryByLibraryApiKey(any())).thenReturn(Optional.of(library));
         when(libraryRepository.save(any(Library.class))).then(AdditionalAnswers.returnsFirstArg());
 

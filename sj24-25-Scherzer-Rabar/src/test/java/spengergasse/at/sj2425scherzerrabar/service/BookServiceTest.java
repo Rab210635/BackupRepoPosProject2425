@@ -41,7 +41,7 @@ class BookServiceTest {
     @Test
     void cant_create_book_with_missing_author(){
         when(authorRepository.findAuthorByAuthorApiKey(any())).thenReturn(Optional.empty());
-        assertThatThrownBy(()-> bookService.createBook(new BookCommand(new ApiKey("BookApiKeys"),"name", LocalDate.now(),true, List.of(BookType.EBOOK),489,"cooler Book", List.of(new ApiKey("AuthorApiKey")),List.of(BookGenre.COMICS)))).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(()-> bookService.createBook(new BookCommand(new ApiKey("BookApiKeys").apiKey(),"name", LocalDate.now(),true, List.of(BookType.EBOOK.name()),489,"cooler Book", List.of(new ApiKey("AuthorApiKey").apiKey()),List.of(BookGenre.COMICS.name())))).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -52,9 +52,9 @@ class BookServiceTest {
         when(bookRepository.save(any(Book.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var Book = bookService.createBook( new BookCommand(
-                new ApiKey("bookApiKey"),"name",LocalDate.of(2025,2,2),true,
-                List.of(BookType.EBOOK),489,"cooler Book",
-                List.of(new ApiKey("authorApiKey")),List.of(BookGenre.COMICS)));
+                new ApiKey("bookApiKey").apiKey(),"name",LocalDate.of(2025,2,2),true,
+                List.of(BookType.EBOOK.name()),489,"cooler Book",
+                List.of(new ApiKey("authorApiKey").apiKey()),List.of(BookGenre.COMICS.name())));
         assertThat(Book).isNotNull();
     }
 
@@ -82,9 +82,9 @@ class BookServiceTest {
         when(bookRepository.findBookByBookApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> bookService.updateBook(new BookCommand(
-                new ApiKey("bookApiKey"), "Updated Name", LocalDate.now(), true,
-                List.of(BookType.EBOOK), 500, "Updated Description",
-                List.of(new ApiKey("authorApiKey")), List.of(BookGenre.COMICS))))
+                new ApiKey("bookApiKey").apiKey(), "Updated Name", LocalDate.now(), true,
+                List.of(BookType.EBOOK.name()), 500, "Updated Description",
+                List.of(new ApiKey("authorApiKey").apiKey()), List.of(BookGenre.COMICS.name()))))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -97,9 +97,9 @@ class BookServiceTest {
         when(bookRepository.save(any(Book.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var command = new BookCommand(
-                new ApiKey("bookApiKey"), "Updated Name", LocalDate.now(), true,
-                List.of(BookType.EBOOK), 500, "Updated Description",
-                List.of(new ApiKey("authorApiKey")), List.of(BookGenre.COMICS));
+                new ApiKey("bookApiKey").apiKey(), "Updated Name", LocalDate.now(), true,
+                List.of(BookType.EBOOK.name()), 500, "Updated Description",
+                List.of(new ApiKey("authorApiKey").apiKey()), List.of(BookGenre.COMICS.name()));
 
         bookService.updateBook(command);
 

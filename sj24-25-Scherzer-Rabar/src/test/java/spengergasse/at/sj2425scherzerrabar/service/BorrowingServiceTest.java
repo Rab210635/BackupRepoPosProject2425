@@ -46,7 +46,7 @@ class BorrowingServiceTest {
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> borrowingService.createBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"),new ApiKey("invalidCustomer"), List.of(new ApiKey("copyApiKey")), LocalDate.now(),0)))
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(),new ApiKey("invalidCustomer").apiKey(), List.of(new ApiKey("copyApiKey").apiKey()), LocalDate.now(),0)))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -57,7 +57,7 @@ class BorrowingServiceTest {
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> borrowingService.createBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"),new ApiKey("customerApiKey"), List.of(new ApiKey("invalidCopy")), LocalDate.now(),0)))
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(),new ApiKey("customerApiKey").apiKey(), List.of(new ApiKey("invalidCopy").apiKey()), LocalDate.now(),0)))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -71,11 +71,11 @@ class BorrowingServiceTest {
         when(borrowingRepository.save(any(Borrowing.class))).then(AdditionalAnswers.returnsFirstArg());
 
         BorrowingDto borrowing = borrowingService.createBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"),new ApiKey("customerApiKey"), List.of(new ApiKey("copyApiKey")), LocalDate.now(),0));
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(),new ApiKey("customerApiKey").apiKey(), List.of(new ApiKey("copyApiKey").apiKey()), LocalDate.now(),0));
 
         assertThat(borrowing).isNotNull();
-        assertThat(borrowing.customerApiKey()).isEqualTo(customer.getCustomerApiKey());
-        assertThat(borrowing.copyApiKeys()).contains(copy.getCopyApiKey());
+        assertThat(borrowing.customerApiKey()).isEqualTo(customer.getCustomerApiKey().apiKey());
+        assertThat(borrowing.copyApiKeys()).contains(copy.getCopyApiKey().apiKey());
     }
 
     @Test
@@ -83,7 +83,7 @@ class BorrowingServiceTest {
         when(borrowingRepository.findBorrowingByBorrowingApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> borrowingService.updateBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"), new ApiKey("customerApiKey"), List.of(new ApiKey("copyApiKey")), LocalDate.now(), 0)))
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(), new ApiKey("customerApiKey").apiKey(), List.of(new ApiKey("copyApiKey").apiKey()), LocalDate.now(), 0)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Borrowing record not found");
     }
@@ -95,7 +95,7 @@ class BorrowingServiceTest {
         when(customerRepository.findCustomerByCustomerApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> borrowingService.updateBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"), new ApiKey("invalidCustomerApiKey"), List.of(new ApiKey("copyApiKey")), LocalDate.now(), 0)))
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(), new ApiKey("invalidCustomerApiKey").apiKey(), List.of(new ApiKey("copyApiKey").apiKey()), LocalDate.now(), 0)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Customer not found");
     }
@@ -109,7 +109,7 @@ class BorrowingServiceTest {
         when(copyRepository.findCopyByCopyApiKey(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> borrowingService.updateBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"), new ApiKey("customerApiKey"), List.of(new ApiKey("invalidCopy")), LocalDate.now(), 0)))
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(), new ApiKey("customerApiKey").apiKey(), List.of(new ApiKey("invalidCopy").apiKey()), LocalDate.now(), 0)))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Copies not found");
     }
@@ -126,11 +126,11 @@ class BorrowingServiceTest {
         when(borrowingRepository.save(any(Borrowing.class))).then(AdditionalAnswers.returnsFirstArg());
 
         var updatedBorrowing = borrowingService.updateBorrowing(
-                new BorrowingCommand(new ApiKey("BorrowingApiKey"), newCustomer.getCustomerApiKey(), List.of(newCopy.getCopyApiKey()), LocalDate.now(), 0));
+                new BorrowingCommand(new ApiKey("BorrowingApiKey").apiKey(), newCustomer.getCustomerApiKey().apiKey(), List.of(newCopy.getCopyApiKey().apiKey()), LocalDate.now(), 0));
 
         assertThat(updatedBorrowing).isNotNull();
-        assertThat(updatedBorrowing.customerApiKey()).isEqualTo(newCustomer.getCustomerApiKey());
-        assertThat(updatedBorrowing.copyApiKeys()).contains(newCopy.getCopyApiKey());
+        assertThat(updatedBorrowing.customerApiKey()).isEqualTo(newCustomer.getCustomerApiKey().apiKey());
+        assertThat(updatedBorrowing.copyApiKeys()).contains(newCopy.getCopyApiKey().apiKey());
     }
 
     @Test
@@ -177,7 +177,7 @@ class BorrowingServiceTest {
         var borrowings = borrowingService.getBorrowingsByCustomer(new ApiKey("customerApiKey"));
 
         assertThat(borrowings).hasSize(1);
-        assertThat(borrowings.get(0).customerApiKey()).isEqualTo(customer.getCustomerApiKey());
+        assertThat(borrowings.get(0).customerApiKey()).isEqualTo(customer.getCustomerApiKey().apiKey());
     }
 
     @Test
@@ -199,7 +199,7 @@ class BorrowingServiceTest {
         var borrowings = borrowingService.getBorrowingsByCopy(new ApiKey("copyApiKey"));
 
         assertThat(borrowings).hasSize(1);
-        assertThat(borrowings.get(0).copyApiKeys()).contains(copy.getCopyApiKey());
+        assertThat(borrowings.get(0).copyApiKeys()).contains(copy.getCopyApiKey().apiKey());
     }
 
     @Test

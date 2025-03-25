@@ -39,7 +39,7 @@ class PublisherServiceTest {
     void can_create_publisher() {
         // Arrange
         Address address = FixturesFactory.address2();
-        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "New Publisher", address);
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey").apiKey(), "New Publisher", address.toString());
         when(publisherRepository.save(any(Publisher.class))).then(AdditionalAnswers.returnsFirstArg());
 
         // Act
@@ -78,7 +78,7 @@ class PublisherServiceTest {
     void cant_update_non_existing_publisher() {
         // Arrange
         Address address = FixturesFactory.address2();
-        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "Updated Publisher", address);
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey").apiKey(), "Updated Publisher", address.toString());
         when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -92,7 +92,8 @@ class PublisherServiceTest {
         // Arrange
         Address address = FixturesFactory.address2();
         Publisher publisher = FixturesFactory.publisher(address);
-        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey"), "Updated Publisher", new Address("New Street", "New City", 5432));
+        Address newAddress = new Address("New Street", "New City", 5432);
+        PublisherCommand command = new PublisherCommand(new ApiKey("apiKey").apiKey(), "Updated Publisher", new Address("New Street", "New City", 5432).toString());
         when(publisherRepository.findPublisherByPublisherApiKey(any())).thenReturn(Optional.of(publisher));
         when(publisherRepository.save(any(Publisher.class))).then(AdditionalAnswers.returnsFirstArg());
 
@@ -102,7 +103,7 @@ class PublisherServiceTest {
         // Assert
         assertThat(updatedPublisher).isNotNull();
         assertThat(updatedPublisher.name()).isEqualTo("Updated Publisher");
-        assertThat(updatedPublisher.address().city()).isEqualTo("New City");
+        assertThat(updatedPublisher.address()).isEqualTo(newAddress.toString());
     }
 
     @Test
