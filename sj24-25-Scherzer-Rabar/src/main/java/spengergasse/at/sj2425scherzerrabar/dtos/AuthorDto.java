@@ -1,8 +1,7 @@
 package spengergasse.at.sj2425scherzerrabar.dtos;
 
 
-import spengergasse.at.sj2425scherzerrabar.domain.Address;
-import spengergasse.at.sj2425scherzerrabar.domain.Author;
+import spengergasse.at.sj2425scherzerrabar.domain.*;
 
 
 import java.util.List;
@@ -15,6 +14,8 @@ public record AuthorDto(
         String lastname,
         String emailAddress
 ) {
+
+
     public static AuthorDto authorDtoFromAuthor(Author author) {
         return new AuthorDto(
                 author.getAuthorApiKey().apiKey(), author.getPenname(),
