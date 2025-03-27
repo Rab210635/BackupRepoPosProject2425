@@ -39,7 +39,7 @@ public class Book {
     private List<BookGenre> genres;
     private String description;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "authors_of_book", joinColumns = @JoinColumn(name = "book_id",
             foreignKey = @ForeignKey(name = "FK_books_2_authors")),
             inverseJoinColumns = @JoinColumn(name = "author_id",

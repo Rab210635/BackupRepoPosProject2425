@@ -28,31 +28,31 @@ class BookGenreConverterTest {
         }
 
         static Stream<Arguments> convert_valid_class_to_database(){
-            return Stream.of(
-                    Arguments.of("MY", BookGenre.MYSTERY),
-                    Arguments.of("TH", BookGenre.THRILLER),
-                    Arguments.of("CR", BookGenre.CRIME),
-                    Arguments.of("RO", BookGenre.ROMANCE),
-                    Arguments.of("FA", BookGenre.FANTASY),
-                    Arguments.of("SF", BookGenre.SCIENCE_FICTION),
-                    Arguments.of("HF", BookGenre.HISTORICAL_FICTION),
-                    Arguments.of("CF", BookGenre.CONTEMPORARY_FICTION),
-                    Arguments.of("YA", BookGenre.YOUNG_ADULT),
-                    Arguments.of("BI", BookGenre.BIOGRAPHY),
-                    Arguments.of("AU", BookGenre.AUTOBIOGRAPHY),
-                    Arguments.of("ME", BookGenre.MEMOIR),
-                    Arguments.of("SH", BookGenre.SELF_HELP),
-                    Arguments.of("TC", BookGenre.TRUE_CRIME),
-                    Arguments.of("HI", BookGenre.HISTORY),
-                    Arguments.of("SC", BookGenre.SCIENCE),
-                    Arguments.of("TE", BookGenre.TECHNOLOGY),
-                    Arguments.of("PH", BookGenre.PHILOSOPHY),
-                    Arguments.of("RE", BookGenre.RELIGION),
-                    Arguments.of("SP", BookGenre.SPIRITUALITY),
-                    Arguments.of("GN", BookGenre.GRAPHIC_NOVELS),
-                    Arguments.of("CO", BookGenre.COMICS),
-                    Arguments.of("PO", BookGenre.POETRY),
-                    Arguments.of("HO", BookGenre.HORROR)
+                return Stream.of(
+                        Arguments.of("MY", BookGenre.MYSTERY),
+                        Arguments.of("TH", BookGenre.THRILLER),
+                        Arguments.of("CR", BookGenre.CRIME),
+                        Arguments.of("RO", BookGenre.ROMANCE),
+                        Arguments.of("FA", BookGenre.FANTASY),
+                        Arguments.of("SF", BookGenre.SCIENCE_FICTION),
+                        Arguments.of("HF", BookGenre.HISTORICAL_FICTION),
+                        Arguments.of("CF", BookGenre.CONTEMPORARY_FICTION),
+                        Arguments.of("YA", BookGenre.YOUNG_ADULT),
+                        Arguments.of("BI", BookGenre.BIOGRAPHY),
+                        Arguments.of("AU", BookGenre.AUTOBIOGRAPHY),
+                        Arguments.of("ME", BookGenre.MEMOIR),
+                        Arguments.of("SH", BookGenre.SELF_HELP),
+                        Arguments.of("TC", BookGenre.TRUE_CRIME),
+                        Arguments.of("HI", BookGenre.HISTORY),
+                        Arguments.of("SC", BookGenre.SCIENCE),
+                        Arguments.of("TE", BookGenre.TECHNOLOGY),
+                        Arguments.of("PH", BookGenre.PHILOSOPHY),
+                        Arguments.of("RE", BookGenre.RELIGION),
+                        Arguments.of("SP", BookGenre.SPIRITUALITY),
+                        Arguments.of("GN", BookGenre.GRAPHIC_NOVELS),
+                        Arguments.of("CO", BookGenre.COMICS),
+                        Arguments.of("PO", BookGenre.POETRY),
+                        Arguments.of("HO", BookGenre.HORROR)
             );
         }
         @Test

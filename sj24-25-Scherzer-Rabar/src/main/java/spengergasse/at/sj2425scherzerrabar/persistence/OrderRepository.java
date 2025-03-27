@@ -3,6 +3,7 @@ package spengergasse.at.sj2425scherzerrabar.persistence;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
 import spengergasse.at.sj2425scherzerrabar.domain.Author;
@@ -19,8 +20,38 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     public Optional<Order> findOrderByOrderApiKey(String apiKey);
 
-
     List<Order> findAllByCustomer_CustomerApiKey_ApiKey(String customerCustomerApiKeyApiKey);
 
     List<Order> findAllByDate(@NotNull @PastOrPresent LocalDate date);
+
+
+    /*
+    @Query("""
+        select o 
+        from Order o 
+        left join fetch o.subscriptions s
+        left join fetch o.books b
+        where o.orderApiKey.apiKey = :apiKey
+        """)
+    public Optional<OrderDto> findProjectedByOrderApiKey(String apiKey);
+*/
+
+    /*
+    @Query("""
+        select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
+        o.orderApiKey, o.customer.customerApiKey,o.subscriptions,o.date,o.books
+        ) from Order o where o.orderApiKey =  :apiKey
+        """)
+    List<OrderDto> findAllProjectedByCustomerApiKey(String customerCustomerApiKeyApiKey);
+
+
+    @Query("""
+        select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
+        o.orderApiKey, o.customer.customerApiKey,o.subscriptions,o.date,o.books
+        ) from Order o where o.orderApiKey =  :apiKey
+        """)
+    List<OrderDto> findAllProjectedByDate(@NotNull @PastOrPresent LocalDate date);
+
+
+     */
 }

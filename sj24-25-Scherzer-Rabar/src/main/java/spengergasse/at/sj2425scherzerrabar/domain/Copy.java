@@ -17,7 +17,7 @@ public class Copy extends BookSpecification {
 
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_copy_2_branch"))
     private Branch inBranch;
 

@@ -175,11 +175,11 @@ class CopyServiceTest {
     void can_get_existing_copy() {
         Copy copy = FixturesFactory.copy();
         CopyDto copyDto = CopyDto.copyDtoFromCopy(copy);
-        when(copyRepository.getProjectedByCopyApiKey((any()))).thenReturn(Optional.of(copyDto));
+        when(copyRepository.findProjectedByCopyApiKey((any()))).thenReturn(Optional.of(copyDto));
 
         var copy1 = copyService.getCopy(copy.getCopyApiKey());
         assertThat(copy1).isEqualTo(copyDto);
-        verify(copyRepository,times(1)).getProjectedByCopyApiKey(any());
+        verify(copyRepository,times(1)).findProjectedByCopyApiKey(any());
     }
 
     @Test

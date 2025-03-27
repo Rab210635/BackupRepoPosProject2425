@@ -14,7 +14,6 @@ import spengergasse.at.sj2425scherzerrabar.persistence.PublisherRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly=true)
@@ -86,7 +85,7 @@ public class CopyService {
     }
 
     public CopyDto getCopy(ApiKey apiKey) {
-        return copyRepository.getProjectedByCopyApiKey(apiKey.apiKey())
+        return copyRepository.findProjectedByCopyApiKey(apiKey.apiKey())
                 .orElseThrow(NoSuchElementException::new);
     }
 

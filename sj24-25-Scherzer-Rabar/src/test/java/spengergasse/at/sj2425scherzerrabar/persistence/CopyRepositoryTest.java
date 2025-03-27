@@ -1,5 +1,6 @@
 package spengergasse.at.sj2425scherzerrabar.persistence;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,8 +18,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CopyRepositoryTest {
     @Autowired
     private CopyRepository repository;
+    @Autowired
+    private BranchRepository branchRepository;
+    @Autowired
+    private BookRepository bookRepository;
+    @Autowired
+    private PublisherRepository publisherRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
     @Test
-    void can_save(){
+    public void can_save(){
         var copy = FixturesFactory.copy();
 
         var saved = repository.save(copy);
@@ -31,4 +42,22 @@ class CopyRepositoryTest {
         Copy defaultconstructed = new Copy();
         assertNotNull(defaultconstructed);
     }
+
+    /*
+    @Test
+    void can_find_projected(){
+        var copy = FixturesFactory.copy();
+        var author = FixturesFactory.author();
+        authorRepository.saveAndFlush(author);
+        repository.saveAndFlush(copy);
+        var found = repository.findProjectedByCopyApiKey(copy.getCopyApiKey().apiKey());
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(found).isNotNull();
+        softly.assertThat(found).isNotEmpty();
+        softly.assertThat(found.get().bookApiKey()).isEqualTo(copy.getBook().getBookApiKey().apiKey());
+        softly.assertAll();
+    }
+     */
+    //TODO HELP UNGY
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface CopyRepository extends JpaRepository<Copy, Long> {
+
     public Optional<Copy> findCopyByCopyApiKey(String apiKey);
 
     List<Copy> getCopiesByBook_BookApiKey(ApiKey bookBookApiKey);
@@ -28,7 +29,7 @@ public interface CopyRepository extends JpaRepository<Copy, Long> {
         c.copyApiKey.apiKey,c.publisher.publisherApiKey.apiKey, c.bookType, c.pageCount ,c.book.bookApiKey.apiKey, c.inBranch.branchApiKey.apiKey
     ) from Copy c where c.copyApiKey.apiKey=:apiKey
     """)
-    public Optional<CopyDto> getProjectedByCopyApiKey(String apiKey);
+    public Optional<CopyDto> findProjectedByCopyApiKey(String copyApiKey);
 
 
     @Query("""
