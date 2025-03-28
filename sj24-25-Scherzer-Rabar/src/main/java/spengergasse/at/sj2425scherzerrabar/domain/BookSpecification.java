@@ -29,16 +29,12 @@ public class BookSpecification {
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_copies_2_book"))
     protected Book book;
 
-    @Max(Integer.MAX_VALUE)
-    @Min(1)
-    private Float price;
 
     public BookSpecification(Publisher publisher, BookType bookType, Integer pageCount, Book book) {
         this.publisher = publisher;
         this.bookType = bookType;
         this.pageCount = pageCount;
         this.book = book;
-        this.price = price;
     }
 
     public BookSpecification() {
@@ -77,11 +73,7 @@ public class BookSpecification {
         this.book = book;
     }
 
-    public @Max(Integer.MAX_VALUE) @Min(1) Float getPrice() {
-        return price;
-    }
 
-    public void setPrice(@Max(Integer.MAX_VALUE) @Min(1) Float price) {
-        this.price = price;
-    }
+
+
 }

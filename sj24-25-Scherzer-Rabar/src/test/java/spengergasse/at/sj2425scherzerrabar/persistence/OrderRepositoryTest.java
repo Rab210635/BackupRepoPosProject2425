@@ -8,9 +8,6 @@ import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.TestcontainersConfiguration;
 import spengergasse.at.sj2425scherzerrabar.domain.*;
 
-import java.util.Date;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest

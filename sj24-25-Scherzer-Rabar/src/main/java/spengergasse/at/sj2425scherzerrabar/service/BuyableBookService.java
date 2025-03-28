@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly=true)
 public class BuyableBookService {
 
-    private BuyableBookRepository buyableBookRepository;
+    private final BuyableBookRepository buyableBookRepository;
     private PublisherRepository publisherRepository;
     private BookRepository bookRepository;
 

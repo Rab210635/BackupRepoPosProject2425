@@ -16,6 +16,10 @@ public record OrderDto(
         this(apiKey.apiKey(), customerApiKey.apiKey(), subscriptions.stream().map(ApiKey::apiKey).toList(),date,booksApiKeys.stream().map(ApiKey::apiKey).toList());
     }
 
+    public OrderDto(Order o){
+        this(o.getOrderApiKey().apiKey(),o.getCustomer().getCustomerApiKey().apiKey(),o.getSubscriptions().stream().map(LibrarySubscription::getLibrarySubscriptionApiKey).map(ApiKey::apiKey).toList(),o.getDate(),o.getBooks().stream().map(BuyableBook::getBuyableBookApiKey).map(ApiKey::apiKey).toList());
+    }
+
 
     public static OrderDto orderDtoFromOrder(Order order) {
        return new OrderDto(order.getOrderApiKey().apiKey(),order.getCustomer().getCustomerApiKey().apiKey(),

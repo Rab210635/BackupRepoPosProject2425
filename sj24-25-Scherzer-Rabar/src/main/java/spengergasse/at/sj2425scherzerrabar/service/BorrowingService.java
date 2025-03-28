@@ -1,18 +1,14 @@
 package spengergasse.at.sj2425scherzerrabar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spengergasse.at.sj2425scherzerrabar.commands.BookCommand;
 import spengergasse.at.sj2425scherzerrabar.commands.BorrowingCommand;
 import spengergasse.at.sj2425scherzerrabar.domain.*;
 import spengergasse.at.sj2425scherzerrabar.dtos.BorrowingDto;
-import spengergasse.at.sj2425scherzerrabar.persistence.AuthorRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.BorrowingRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.CopyRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.CustomerRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

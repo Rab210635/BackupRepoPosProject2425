@@ -1,6 +1,8 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
@@ -10,9 +12,12 @@ public class BuyableBook extends BookSpecification {
         @EmbeddedId
         private BuyableBookId buyableBookId;
         @Embedded
+        @AttributeOverride(name = "apiKey", column = @Column(name = "buyablebook_api_key"))
         private ApiKey buyableBookApiKey;
-
+        @Max(Integer.MAX_VALUE)
+        @Min(1)
         private Float price;
+
 
         @Embeddable
         record BuyableBookId(@GeneratedValue @NotNull Long buyableBookId) {}
@@ -27,12 +32,10 @@ public class BuyableBook extends BookSpecification {
                 this.book = book;
         }
 
-        @Override
         public Float getPrice() {
                 return price;
         }
 
-        @Override
         public void setPrice(Float price) {
                 this.price = price;
         }

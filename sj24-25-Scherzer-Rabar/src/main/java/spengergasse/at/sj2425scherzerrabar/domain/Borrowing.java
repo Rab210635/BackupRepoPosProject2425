@@ -5,10 +5,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,6 +16,7 @@ public class Borrowing {
     @EmbeddedId
     private BorrowingId borrowingId;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "borrowing_api_key"))
     private ApiKey borrowingApiKey;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "customer_borrowing", foreignKey = @ForeignKey(name = "FK_borrowings_2_customer"))

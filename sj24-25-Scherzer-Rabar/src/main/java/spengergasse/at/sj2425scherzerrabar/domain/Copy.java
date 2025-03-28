@@ -1,11 +1,8 @@
 package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
-import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
 
 @Entity
 @Table(name = "copy")
@@ -13,12 +10,13 @@ public class Copy extends BookSpecification {
     @EmbeddedId
     private CopyId copyId;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "copy_api_key"))
     private ApiKey copyApiKey;
 
 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_copy_2_branch"))
+    @JoinColumn(name = "branch_id",foreignKey = @ForeignKey(name = "FK_copy_2_branch"))
     private Branch inBranch;
 
     public Copy(Publisher publisher, BookType bookType, Integer pageCount, Book book, Branch inBranch) {

@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.util.Properties;
-
 
 @Configuration
 public class Sj2425scherzerrabarTestMain {

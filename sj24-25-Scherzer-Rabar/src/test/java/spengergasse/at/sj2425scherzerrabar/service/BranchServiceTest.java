@@ -10,8 +10,6 @@ import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.commands.BranchCommand;
 import spengergasse.at.sj2425scherzerrabar.domain.ApiKey;
 import spengergasse.at.sj2425scherzerrabar.domain.Branch;
-import spengergasse.at.sj2425scherzerrabar.domain.Library;
-import spengergasse.at.sj2425scherzerrabar.dtos.BranchDto;
 import spengergasse.at.sj2425scherzerrabar.persistence.BranchRepository;
 import spengergasse.at.sj2425scherzerrabar.persistence.LibraryRepository;
 
@@ -21,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

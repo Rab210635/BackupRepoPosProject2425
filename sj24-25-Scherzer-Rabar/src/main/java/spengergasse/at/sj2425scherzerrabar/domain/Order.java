@@ -14,6 +14,7 @@ public class Order {
     @EmbeddedId
     private OrderId id;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "order_api_key"))
     private ApiKey orderApiKey;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull

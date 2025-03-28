@@ -29,7 +29,7 @@ public interface CopyRepository extends JpaRepository<Copy, Long> {
         c.copyApiKey.apiKey,c.publisher.publisherApiKey.apiKey, c.bookType, c.pageCount ,c.book.bookApiKey.apiKey, c.inBranch.branchApiKey.apiKey
     ) from Copy c where c.copyApiKey.apiKey=:apiKey
     """)
-    public Optional<CopyDto> findProjectedByCopyApiKey(String copyApiKey);
+    public Optional<CopyDto> findProjectedByCopyApiKey(String apiKey);
 
 
     @Query("""

@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Import;
 import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.TestcontainersConfiguration;
 import spengergasse.at.sj2425scherzerrabar.domain.BookInLibraries;
-import spengergasse.at.sj2425scherzerrabar.domain.Borrowing;
-import spengergasse.at.sj2425scherzerrabar.domain.Library;
 import spengergasse.at.sj2425scherzerrabar.domain.LibrarySubscription;
 
 import java.util.List;

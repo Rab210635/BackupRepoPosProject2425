@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly=true)
 public class OrderService {
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
     private BuyableBookRepository buyableBookRepository;
     private LibrarySubscriptionRepository librarySubscriptionRepository;

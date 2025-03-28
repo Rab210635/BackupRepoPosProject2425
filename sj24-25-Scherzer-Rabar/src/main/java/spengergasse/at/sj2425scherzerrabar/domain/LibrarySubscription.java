@@ -12,6 +12,7 @@ public class LibrarySubscription {
     @EmbeddedId
     private LibrarySubscriptionId librarySubscriptionId;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "librarysubscription_api_key"))
     private ApiKey librarySubscriptionApiKey;
     @NotNull
     private String name;

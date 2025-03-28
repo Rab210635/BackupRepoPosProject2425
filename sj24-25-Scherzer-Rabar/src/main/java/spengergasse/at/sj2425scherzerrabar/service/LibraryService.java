@@ -11,7 +11,6 @@ import spengergasse.at.sj2425scherzerrabar.persistence.LibraryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

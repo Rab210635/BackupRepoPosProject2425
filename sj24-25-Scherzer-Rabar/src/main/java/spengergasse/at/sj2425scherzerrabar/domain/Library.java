@@ -2,7 +2,6 @@ package spengergasse.at.sj2425scherzerrabar.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 
 import java.util.List;
@@ -15,6 +14,7 @@ public class Library {
     @NotNull
     private String name;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "library_api_key"))
     private ApiKey libraryApiKey;
 
     @NotNull

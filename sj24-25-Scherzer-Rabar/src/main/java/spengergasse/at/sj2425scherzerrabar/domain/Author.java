@@ -16,8 +16,7 @@ public class Author extends Person {
     protected List<Address> address;
     
     @Embedded
-
-    @AttributeOverride(name = "api_key", column = @Column(name = "author_api_key"))
+    @AttributeOverride(name = "apiKey", column = @Column(name = "author_api_key"))
     private ApiKey authorApiKey;
 
 

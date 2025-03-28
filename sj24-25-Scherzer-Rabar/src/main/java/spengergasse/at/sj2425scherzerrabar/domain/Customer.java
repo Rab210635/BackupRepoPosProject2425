@@ -12,6 +12,7 @@ public class Customer extends Person {
     @JoinTable(name = "addresses_in_customers", foreignKey = @ForeignKey(name = "FK_adresses_2_customer"))
     protected List<Address> address;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "customer_api_key"))
     private ApiKey customerApiKey;
 
     public Customer(String firstName, String lastName, EmailAddress emailAddress, List<Address> address) {

@@ -11,6 +11,7 @@ public class Review {
     private ReviewId reviewId;
 
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "review_api_key"))
     private ApiKey reviewApiKey;
 
     private String title;

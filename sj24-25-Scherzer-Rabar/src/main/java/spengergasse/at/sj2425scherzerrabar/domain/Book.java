@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-import spengergasse.at.sj2425scherzerrabar.commands.BookCommand;
 import spengergasse.at.sj2425scherzerrabar.foundation.ApiKeyFactory;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookGenreConverter;
 import spengergasse.at.sj2425scherzerrabar.persistence.converter.BookTypeConverter;
@@ -19,6 +17,7 @@ public class Book {
     @EmbeddedId
     private BookId bookId;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "book_api_key"))
     private ApiKey bookApiKey;
     @NotNull
     private String name;
@@ -39,7 +38,8 @@ public class Book {
     private List<BookGenre> genres;
     private String description;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST
+    )
     @JoinTable(name = "authors_of_book", joinColumns = @JoinColumn(name = "book_id",
             foreignKey = @ForeignKey(name = "FK_books_2_authors")),
             inverseJoinColumns = @JoinColumn(name = "author_id",

@@ -6,7 +6,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.TestcontainersConfiguration;
-import spengergasse.at.sj2425scherzerrabar.domain.Borrowing;
 import spengergasse.at.sj2425scherzerrabar.domain.Publisher;
 
 import static org.junit.jupiter.api.Assertions.*;

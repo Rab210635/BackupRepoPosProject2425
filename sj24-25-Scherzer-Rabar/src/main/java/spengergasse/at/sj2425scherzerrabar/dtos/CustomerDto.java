@@ -6,7 +6,6 @@ import spengergasse.at.sj2425scherzerrabar.domain.Customer;
 import spengergasse.at.sj2425scherzerrabar.domain.EmailAddress;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public record CustomerDto(String apiKey, List<String> addresses, String firstName,
                           String lastName, String emailAddress) {

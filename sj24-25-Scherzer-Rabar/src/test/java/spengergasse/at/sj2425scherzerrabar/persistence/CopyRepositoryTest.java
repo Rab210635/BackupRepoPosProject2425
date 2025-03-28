@@ -9,8 +9,6 @@ import spengergasse.at.sj2425scherzerrabar.FixturesFactory;
 import spengergasse.at.sj2425scherzerrabar.TestcontainersConfiguration;
 import spengergasse.at.sj2425scherzerrabar.domain.*;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -43,12 +41,12 @@ class CopyRepositoryTest {
         assertNotNull(defaultconstructed);
     }
 
-    /*
+
     @Test
     void can_find_projected(){
         var copy = FixturesFactory.copy();
-        var author = FixturesFactory.author();
-        authorRepository.saveAndFlush(author);
+        copy.getBook().getAuthors().get(0).setPenname("Andere");
+        copy.getBook().getAuthors().get(0).setEmailAddress(new EmailAddress("andereMail@gmail.com"));
         repository.saveAndFlush(copy);
         var found = repository.findProjectedByCopyApiKey(copy.getCopyApiKey().apiKey());
 
@@ -58,6 +56,5 @@ class CopyRepositoryTest {
         softly.assertThat(found.get().bookApiKey()).isEqualTo(copy.getBook().getBookApiKey().apiKey());
         softly.assertAll();
     }
-     */
-    //TODO HELP UNGY
+
 }

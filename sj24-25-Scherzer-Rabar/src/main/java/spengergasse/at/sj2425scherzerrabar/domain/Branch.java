@@ -10,6 +10,8 @@ public class Branch {
     @EmbeddedId
     BranchId branchId;
     @Embedded
+    @AttributeOverride(name = "apiKey", column = @Column(name = "branch_api_key"))
+
     private ApiKey branchApiKey;
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_branches_2_library"))

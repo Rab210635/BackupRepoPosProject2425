@@ -25,33 +25,37 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByDate(@NotNull @PastOrPresent LocalDate date);
 
 
-    /*
     @Query("""
-        select o 
-        from Order o 
-        left join fetch o.subscriptions s
-        left join fetch o.books b
-        where o.orderApiKey.apiKey = :apiKey
+        select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
+            o
+        ) from Order o
+        """)
+    List<OrderDto> findAllProjected();
+
+    @Query("""
+        select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
+            o
+        ) from Order o where o.orderApiKey =  :apiKey
         """)
     public Optional<OrderDto> findProjectedByOrderApiKey(String apiKey);
-*/
 
-    /*
+
+
     @Query("""
         select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
-        o.orderApiKey, o.customer.customerApiKey,o.subscriptions,o.date,o.books
-        ) from Order o where o.orderApiKey =  :apiKey
+            o
+        ) from Order o where o.customer.customerApiKey = :apiKey
         """)
-    List<OrderDto> findAllProjectedByCustomerApiKey(String customerCustomerApiKeyApiKey);
+    List<OrderDto> findAllProjectedByCustomerApiKey(String apiKey);
 
 
     @Query("""
         select new spengergasse.at.sj2425scherzerrabar.dtos.OrderDto(
-        o.orderApiKey, o.customer.customerApiKey,o.subscriptions,o.date,o.books
-        ) from Order o where o.orderApiKey =  :apiKey
+        o
+        ) from Order o where o.date =  :date
         """)
     List<OrderDto> findAllProjectedByDate(@NotNull @PastOrPresent LocalDate date);
 
 
-     */
+
 }
